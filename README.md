@@ -3,7 +3,7 @@
 This is the very first version of the AkulAI project. This is very basic, but I definetly plan on adding other things as well. I will update from time to time, but make sure to look out for other repos with later version. This one will only contain bug fixes after this. 
 
 To create your own skill, create a new file in the skills folder, and type in the followng code.
-''' python
+'''
 from dataclasses import dataclass
 from skills import factory
 from core.ai import AI
