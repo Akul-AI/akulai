@@ -18,6 +18,7 @@ class Insults_skill:
         
     def handle_command(self, command:str, ai:AI):
        ai.say('you are a worm')
+
 def initialize():
     factory.register('insult_skill', Insult_skill)
 ```
