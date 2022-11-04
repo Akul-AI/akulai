@@ -3,27 +3,28 @@
 This is the very first version of the AkulAI project. This is very basic, but I definetly plan on adding other things as well. I will update from time to time, but make sure to look out for other repos with later version. This one will only contain bug fixes after this. 
 
 To create your own skill, create a new file in the skills folder, and type in the followng code.
-'''
+
+``` python
 from dataclasses import dataclass
 from skills import factory
 from core.ai import AI
 
 @dataclass
-class Insults_skill:   # This is an example, name it anything you want, with _skill after it
-    name = 'insults_skill'
+class Insults_skill:
+    name = 'insults'
     
-    def commands(self, command:str): # What ever the ai should listen to to respond
+    def commands(self, command:str):
         return ['insult me', 'tell me an insult', 'give me an insult', 'roast me']
         
-    def handle_command(self, command:str, ai:AI): # how should the ai respond
+    def handle_command(self, command:str, ai:AI):
        ai.say('you are a worm')
-
 def initialize():
-    factory.register('insult_skill', Insult_skill) # registers the skill with the class name and what ever skill you put in there
-'''
+    factory.register('insult_skill', Insult_skill)
+```
 
-now update the skills.json file so it looks like this:
-''' json
+3. Update the `skills.json` file to include the new skill:
+
+``` json
 {
     "plugins": ["skills.goodday", "skills.weather", "skills.facts", "skills.jokes", "skills.calendar", "skills.insult"],
     "skills": [
@@ -47,6 +48,7 @@ now update the skills.json file so it looks like this:
         }
     ]
 }
-'''
+```
+
 
 Reload the AI and test out your new skill!
