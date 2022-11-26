@@ -1,8 +1,11 @@
 {
-    "plugins": ["skills.goodday", "skills.weather", "skills.facts", "skills.jokes", "skills.calendar","skills.mirror","skills.pomodoro"],
+    "plugins": ["skills.goodday", "skills.weather", "skills.facts", "skills.jokes", "skills.calendar","skills.mirror","skills.pomodoro", "skills.todo"],
     "skills": [
         {
             "name": "weather_skill"
+        },
+        {
+            "name": "todo_skill"
         },
         {
             "name": "facts_skill"
