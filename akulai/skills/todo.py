@@ -206,7 +206,7 @@ class Todo_skill():
         return command
 
 def initialize():
-    factory.register('todo_skill', Todo_skill()
+    factory.register('todo_skill', Todo_skill)
     print("Todo Skill initialized")
 
 todo = Todo()
