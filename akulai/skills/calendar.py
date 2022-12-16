@@ -1,7 +1,3 @@
-# Calendar_skill.py
-# AI Calendar skill
-# Kevin McAleer - August 2021
-
 from ics import Calendar, Event
 from pathlib import Path
 import os
