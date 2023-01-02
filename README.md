@@ -1,6 +1,6 @@
 # AkulAI Core
 
-This is the very first version of the AkulAI project. This is very basic, but I definetly plan on adding other things as well. I will update from time to time, but as a solo developer (during the time of writing), please don't expect a lot.
+This is the very first version of the AkulAI project. As of right now, it relies on quite a few online services, but the main code is offline. Hopefully, someday, we can make this completely offline. Of course, this is very basic, but I definetly plan on adding other things as well. I will update from time to time, but as a solo developer (during the time of writing), please don't expect a lot.
 
 (This does open up a WebUI which probably won't be supported in other versions.)
 
