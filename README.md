@@ -1,6 +1,6 @@
-# AkulAI V1
+# AkulAI Core
 
-This is the very first version of the AkulAI project. This is very basic, but I definetly plan on adding other things as well. I will update from time to time, but make sure to look out for other repos with later version. This one will only contain bug fixes, requested features, and any other minor changes after this. 
+This is the very first version of the AkulAI project. This is very basic, but I definetly plan on adding other things as well. I will update from time to time, but as a solo developer (during the time of writing), please don't expect a lot.
 
 (This does open up a WebUI which probably won't be supported in other versions.)
 
