@@ -1,6 +1,8 @@
 # AkulAI Core
 
-This is the very first version of the AkulAI project. As of right now, it relies on quite a few online services, but the main code is offline. Hopefully, someday, we can make this completely offline. Of course, this is very basic, but I definetly plan on adding other things as well. I will update from time to time, but as a solo developer (during the time of writing), please don't expect a lot.
+First off, don't forget to download the ASR model from [here](https://alphacephei.com/vosk/models), unzip it, rename it to ```model``` and place it in the ```akulai``` directory. It won't work without that.
+
+This is version 1.0.1 of the AkulAI project. As of right now, it relies on quite a few online services, but the main code is offline. Hopefully, someday, we can make this completely offline. Of course, this is very basic, but I definetly plan on adding other things as well. I will update from time to time, but as a solo developer (during the time of writing), please don't expect a lot.
 
 (This does open up a WebUI which probably won't be supported in other versions.)
 
@@ -57,3 +59,7 @@ def initialize():
 
 
 Reload the AI and test out your new skill!
+
+## Pointless Information (Kinda)
+
+We use semantic versioning. That's it so far.
