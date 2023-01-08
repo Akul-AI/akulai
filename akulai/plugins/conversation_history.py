@@ -1,7 +1,3 @@
-# Conversation History
-# Kevin McAleer
-# July 2022
-
 from time import strftime, localtime
 from dataclasses import dataclass
 from core.ai import AI
