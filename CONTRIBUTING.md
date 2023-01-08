@@ -1,4 +1,4 @@
-It is pretty simple:
+It's really simple:
 
 1. Try not to rely on online services as much as possible.
 2. Test your code.
