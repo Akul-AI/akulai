@@ -1,9 +1,4 @@
-# cal_test.py
-# Calendar test
-# Kevin McAleer
-# 18 August 2021
-
-from skills.calendar import Calendar, Calendar_skill
+from akulai.skills.calendar import Calendar, Calendar_skill
 
 mycal = Calendar_skill()
 mycal.load()

@@ -1,5 +1,5 @@
 from time import sleep
-from events.eventhook import Event_hook
+from akulai.events.eventhook import Event_hook
 
 def test_event_hook_after():
     print("this is an event hook for after")

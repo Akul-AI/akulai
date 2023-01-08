@@ -1,6 +1,6 @@
 from typing import Protocol
-from skills.skill import Skill
-from skills import factory, loader
+from akulai.skills.skill import Skill
+from akulai.skills import factory, loader
 import json
 from dataclasses import dataclass
 

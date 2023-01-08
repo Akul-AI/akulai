@@ -1,4 +1,4 @@
-from core.ai import AI
+from akulai.core.ai import AI
 from time import sleep
 
 akulai = AI()
