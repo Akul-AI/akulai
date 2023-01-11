@@ -6,7 +6,7 @@ This is version 1.0.1 of the AkulAI project. As of right now, it relies on quite
 
 (This does open up a WebUI which probably won't be supported in other versions.)
 
-Please share this and contribute to it, I would love to get some help.
+Please share this and contribute to it, I would love to get some help. If you don't know what to do to help, take a look at todo.md. Or the issues. Your choice.
 
 This is an example of how to make a very simple skill.
 
