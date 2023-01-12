@@ -14,7 +14,7 @@ class AkulAI:
         self.listening_thread.start()
         self.plugins = {}
         self.discover_plugins()
-        self.model = vosk.Model("path/to/model")
+        self.model = vosk.Model("./vosk-model")
         self.recognizer = vosk.KaldiRecognizer(self.model, sample_rate=16000)
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(format=pyaudio.paInt16,
