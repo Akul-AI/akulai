@@ -1,5 +1,7 @@
 # AkulAI Core
 
+NOTE: TAKE A LOOK AT VERSION 2.0.0 (in progress). IT SUPPORTS JS PLUGINS TOO AND IS VERY LIGHTWEIGHT IN COMPARISON TO THIS!
+
 First off, don't forget to download the ASR model from [here](https://alphacephei.com/vosk/models), unzip it, rename it to ```model``` and place it in the ```akulai``` directory. It won't work without that.
 
 This is version 1.0.1 of the AkulAI project. As of right now, it relies on quite a few online services, but the main code is offline. Hopefully, someday, we can make this completely offline. Of course, this is very basic, but I definetly plan on adding other things as well. I will update from time to time, but as a solo developer (during the time of writing), please don't expect a lot.
