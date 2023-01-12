@@ -6,7 +6,7 @@ Version 2 is OUT!  I will update from time to time, but as a solo developer (dur
 
 Please share this and contribute to it, I would love to get some help. If you don't know what to do to help, take a look at todo.md. Or the issues. Your choice.
 
-How do I create a skill...??
+## How do I create a skill...??
 
 Check the `plugins` directory! We now support JS plugins too!
 
