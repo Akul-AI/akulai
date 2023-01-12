@@ -1,62 +1,79 @@
-from core.ai import AI
-from skills import factory, loader
-from plugins import plugin_loader, plugin_factory
-import json
-from events.eventhook import Event_hook
-import sys
+import os
+import threading
+import vosk
+import pyaudio
+import espeakng
+import PyNodeJS
+import importlib
 
-akulai = AI()
+class AkulAI:
+    def __init__(self):
+        self.create_plugin_directory()
+        self.stop_listening = threading.Event()
+        self.listening_thread = threading.Thread(target=self.listen)
+        self.listening_thread.start()
+        self.plugins = {}
+        self.discover_plugins()
+        self.model = vosk.Model("path/to/model")
+        self.recognizer = vosk.KaldiRecognizer(self.model, sample_rate=16000)
+        self.p = pyaudio.PyAudio()
+        self.stream = self.p.open(format=pyaudio.paInt16,
+                        channels=1,
+                        rate=16000,
+                        input=True,
+                        frames_per_buffer=8000)
 
-# Setup events for plugins to attach to
-akulai.start = Event_hook()
-akulai.stop = Event_hook()
+    def discover_plugins(self):
+        for file in os.listdir("plugins"):
+            if file.endswith(".py"):
+                plugin_name = os.path.splitext(file)[0]
+                self.plugins[plugin_name] = {"handle": self.load_plugin(file), "extension": ".py"}
 
-command = ""
+    def load_plugin(self, file):
+        module_name = os.path.splitext(file)[0]
+        spec = importlib.util.spec_from_file_location(module_name, f"plugins/{file}")
+        plugin = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(plugin)
+        return plugin.handle
 
-# load the skills
-with open("./skills/skills.json") as f:
-    data = json.load(f)
+    def listen(self):
+        while not self.stop_listening.is_set():
+            data = self.stream.read(self.recognizer.sample_rate, exception_on_overflow = False)
+            if len(data) == 0:
+                break
+            if self.recognizer.AcceptWaveform(data):
+                result = self.recognizer.Result()
+                self.process_command(result)
+       
+    def process_command(self, command):
+        for plugin_name in self.plugins:
+            if plugin_name in command:
+                try:
+                    plugin_module = self.load_plugin(plugin_name)
+                    if plugin_module["extension"]=='.py':
+                        plugin_module["handle"](self,command)
+                    elif plugin_module["extension"]=='.js':
+                        # bridge setup 
+                        PyNodeJS.execute_js(f'''
+                            const akulAI = {self};
+                            {plugin_module["code"]}
+                        ''')
+                except Exception as e:
+                    self.speak(f"An error occurred while running the plugin {plugin_name}: {str(e)}")
+                    raise
+                return
+        self.speak("I'm sorry, I didn't understand that command.")
 
-    # load the plugins
-    loader.load_skills(data["plugins"])
+    def speak(self,text):
+        aispeaker = espeakng.speaker()
+        aispeaker.say(text)
 
-skills = [factory.create(item) for item in data["skills"]]
-print(f'skills: {skills}')
+    def stop(self):
+        self.stop_listening.set()
+        self.listening_thread.join()
+        self.stream.stop_stream()
+        self.stream.close()
+        self.p.terminate()
 
-# Load the plugins
-with open("./plugins/plugins.json") as f:
-    plugin_data = json.load(f)
-    print(f'plugins: {plugin_data["plugins"]}')
-    # load the plugins
-    plugin_loader.load_plugins(plugin_data["plugins"])
-
-plugins = [plugin_factory.create(item) for item in plugin_data["items"]]
-
-# Register all the plugins
-for item in plugins:
-    item.register(akulai)
-
-akulai.start.trigger()
-akulai.say("Hello")
-command = ""
-while True and command not in ["good bye", 'bye', 'quit', 'exit','goodbye', 'the exit']:
-    command = ""
-    command = akulai.listen()
-    if command:
-        command = command.lower()
-        print(f'command heard: {command}') 
-        for skill in skills:
-            if command in skill.commands(command):
-                skill.handle_command(command, akulai)
-
-akulai.say("Goodbye!")
-
-# tell the plugins the server is shutting down
-print('telling triggers to stop')
-akulai.stop.trigger()
-print('telling ai to stop')
-akulai.stop_ai()
-print('deleting ai')
-del(akulai)
-print('done')
-
+akulai = AkulAI()
+akulai.run()
