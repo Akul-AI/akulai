@@ -4,7 +4,7 @@ The code below takes the code from the `time.py`
 
 ``` python
 
-def handle(akulAI, command):
+def handle(akulai, command):
     if command.lower() == "hello, world!":
         akulAI.speak("Hello, world!")
 
@@ -22,7 +22,7 @@ It's also important to note that you can use any of the python modules and packa
 The code below makes a simple "Hello, World!" application.
 
 ``` javascript
-module.exports.handle = function (akulAI, command) {
+module.exports.handle = function (akulai, command) {
   if (command.toLowerCase() === "hello, world!") {
     akulAI.speak("Hello, world!");
   }
