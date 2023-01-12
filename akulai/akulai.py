@@ -8,7 +8,6 @@ import importlib
 
 class AkulAI:
     def __init__(self):
-        self.create_plugin_directory()
         self.stop_listening = threading.Event()
         self.listening_thread = threading.Thread(target=self.listen)
         self.listening_thread.start()
@@ -74,6 +73,3 @@ class AkulAI:
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
-
-akulai = AkulAI()
-akulai.run()
