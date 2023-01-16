@@ -3,3 +3,6 @@ vosk
 pyaudio
 runpy
 PyNodeJS
+importlib
+threading
+os
