@@ -6,3 +6,5 @@ PyNodeJS
 importlib
 threading
 os
+chatterbot
+chatterbot-corpus
