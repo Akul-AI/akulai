@@ -1,3 +1,4 @@
+# Chat with Chatterbot :)
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 
