@@ -23,22 +23,18 @@ class AkulAI:
                         frames_per_buffer=8000)
 
     def discover_plugins(self):
-        for file in os.listdir("plugins"):
-            if file.endswith(".py") or file.endswith(".js"):
-                plugin_name = os.path.splitext(file)[0]
-                extension = os.path.splitext(file)[1]
-                self.plugins[plugin_name] = {"handle": self.load_plugin(file, extension), "extension": extension}
+    for file in os.listdir("plugins"):
+        if file.endswith(".py"):
+            plugin_name = os.path.splitext(file)[0]
+            extension = os.path.splitext(file)[1]
+            self.plugins[plugin_name] = {"handle": self.load_plugin(file, extension), "extension": extension}
+        elif file.endswith(".js"):
+            plugin_name = os.path.splitext(file)[0]
+            self.plugins[plugin_name] = {"handle": self.load_plugin(file), "extension": ".js"}
 
-    def load_plugin(self, file, extension):
-        if extension == ".py":
-            module_name = os.path.splitext(file)[0]
-            spec = importlib.util.spec_from_file_location(module_name, f"plugins/{file}")
-            plugin = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(plugin)
-            return plugin.handle
-        elif extension == ".js":
-            with open(f"plugins/{file}", "r") as f:
-                return f.read()
+def load_plugin(self, file):
+    with open(f"plugins/{file}", "r") as f:
+        return f.read()
 
     def listen(self):
         while not self.stop_listening.is_set():
