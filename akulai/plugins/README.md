@@ -1,36 +1,56 @@
-# Python Plugins
+# AkulAI Plugins
 
-The code below takes the code from the `time.py`
+The AkulAI class allows for the use of plugins to extend its functionality. Plugins can be written in both Python and JavaScript and are located in the "plugins" directory.
+
+## Creating a Plugin
+To create a plugin, simply create a new file in the "plugins" directory with the desired behavior. The file should be named with the name of the plugin and the file extension of either .py or .js.
+
+## Python Plugins
+Python plugins should be written as a function called `handle(akulai, command)` where `akulai` is an instance of the `AkulAI` class and `command` is the string of the command that the user said.
+
+Here is an example of a Python plugin that says "Hello, World!" when the user says "hello":
 
 ``` python
-
 def handle(akulai, command):
-    if command.lower() == "hello, world!":
-        akulAI.speak("Hello, world!")
-
+    if "hello" in command:
+        akulai.speak("Hello, World!")
 ```
+## Javascript Plugins
+JavaScript plugins should be written as a function called `handle(akulai, command)` where `akulai` is an instance of the `AkulAI` class and `command` is the string of the command that the user said.
 
-The function `handle` will be executed when the plugin is loaded by the AkulAI class. This function takes two arguments, an instance of AkulAI and the command passed in by the user. The function then checks if the command is "Hello, world!", and if it is, it calls the speak function on the AkulAI instance to speak the text "Hello, world!".
-
-You can save this code in a file called `hello_world.py` inside the plugins directory.
-
-Please note that the above example is a very basic one and it is not doing any error handling and assumes that all the necessary modules are imported.
-It's also important to note that you can use any of the python modules and packages to handle different tasks, such as HTTP requests, file I/O, etc. inside your python plugin, however, you need to install them before using them.
-
-# JS Plugins
-
-The code below makes a simple "Hello, World!" application.
+Here is an example of a JavaScript plugin that says "Hello, World!" when the user says "hello":
 
 ``` javascript
-module.exports.handle = function (akulai, command) {
-  if (command.toLowerCase() === "hello, world!") {
-    akulAI.speak("Hello, world!");
-  }
+function handle(akulai, command) {
+    if (command.indexOf("hello") !== -1) {
+        akulai.speak("Hello, World!");
+    } 
 }
 ```
+If you want to check for multiple words, you can use the `.indexOf()` method multiple times and use logical operators `(&&, ||, etc)` to check if multiple conditions are met.
 
-The JavaScript function `module.exports.handle` will be executed when the JavaScript plugin is loaded by AkulAI. This function takes two arguments, an instance of AkulAI and the command passed in by the user. The function then checks if the command is "Hello, world!", and if it is, it calls the speak function on the AkulAI instance to speak the text "Hello, world!".
+It's important to note that `.indexOf()` is not the only way to check if a string contains a specific substring. you can use other methods such as `.includes()`, `.search()`, `RegExp`, etc.
 
-You can save this code in a file called `hello_world.js` inside the plugins directory.
+For example, you can use `.includes()` instead of `.indexOf()`, like this:
 
-It's also important to note that you can use any of the available NodeJS packages to handle different tasks, such as HTTP requests, file I/O, etc. inside your javascript plugin, however, you need to install them before using them.
+``` javascript
+if (command.includes("hello")) {
+    akulai.speak("Hello, World!");
+}
+```
+or you can use `RegExp` to check if a string matches a specific pattern, like this:
+
+``` javascript
+let match = command.match(/hello/);
+if (match) {
+    akulai.speak("Hello, World!");
+}
+```
+It all depends on your plugin and preference.
+
+## Using a Plugin
+Once a plugin has been created, it will automatically be loaded and available for use when the `AkulAI` class is instantiated. The `AkulAI` class will search for any files with the extensions of ".py" or ".js" in the "plugins" directory, and will add them to the list of available plugins.
+
+A plugin can be executed by including its name in the command given to the `AkulAI` instance.
+
+For example, if you have a plugin called "example" that says "Hello, World!" when the user says "hello", you can test it by saying "hello" and the response should be "Hello, World!"
