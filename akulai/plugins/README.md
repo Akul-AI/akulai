@@ -48,6 +48,8 @@ if (match) {
 ```
 It all depends on your plugin and preference.
 
+Keep in mind that when making plugins which require packages, the `node_modules` directory and the `package.json` file belong in the root directory.
+
 ## Using a Plugin
 Once a plugin has been created, it will automatically be loaded and available for use when the `AkulAI` class is instantiated. The `AkulAI` class will search for any files with the extensions of ".py" or ".js" in the "plugins" directory, and will add them to the list of available plugins.
 
