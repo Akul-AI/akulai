@@ -1,6 +1,6 @@
 # AkulAI Core
 
-Note: For TTS to work, make sure you have espeakng installed in your system. See their [Pypi project](https://pypi.org/project/espeakng/) to see how you can get it installed. Also make sure you have Node.js installed before installing PyNodeJS. See their [Github docs](https://github.com/sancho1952007/PyNodeJS) for more details. 
+Note: First off, don't forget to download the ASR model from [here](https://alphacephei.com/vosk/models), unzip it, rename it to `vosk_model` and place it in the `akulai` directory. It won't work without that. Also, for TTS to work, make sure you have espeakng installed in your system. See their [Pypi project](https://pypi.org/project/espeakng/) to see how you can get it installed. Also make sure you have Node.js installed before installing PyNodeJS. See their [Github docs](https://github.com/sancho1952007/PyNodeJS) for more details. 
 
 ### Linux Install
 You may install the softwares mentioned above using the provided shell script(Ubuntu only so far). 
