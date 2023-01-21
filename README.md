@@ -6,7 +6,7 @@ Note: For TTS to work, make sure you have espeakng installed in your system. See
 You may install the softwares mentioned above using the provided shell script(Ubuntu only so far). 
 
 ### Windows Install
-You may install the softwares mentioned above using the provided poweshell script. See [the Microsoft website](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scripts?view=powershell-7.3) to learn how to run the script.
+You may install the softwares mentioned above using the provided poweshell script. See [the Microsoft website](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_scripts?view=powershell-7.3) to learn how to run the script. Note that if using the script, you will still need to separately install espeak-NG as it doesn't have support for PowerShell.
 
 Version 2 is OUT! We plan to release a stable version sometime near the end of February, so stay tuned! I will update from time to time, but as a solo developer (during the time of writing), please don't expect a lot.
 
