@@ -10,6 +10,10 @@ Please share this and contribute to it, I would love to get some help. If you do
 
 Check the `plugins` directory! We now support JS plugins too!
 
+## What happened to the other one?
+
+Go to the (master-v1 branch)[https://github.com/Akul-AI/akulai/tree/master-v1] for the code. If you did see this code when it was being developed, thank you for supporting us for so long!
+
 ## Pointless Information (Kinda)
 
 We use semantic versioning. That's it so far.
