@@ -24,6 +24,21 @@ mv $subdir/* akulai/plugins/
 # Clean up the downloaded archive and extracted subdirectory
 rm -rf $subdir $subdir.tar
 
+# Get the latest version of the vosk model
+vosk_version=$(curl -s https://api.github.com/repos/alphacep/vosk-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')
+
+# Download the latest English vosk model
+curl -LJO https://github.com/alphacep/vosk-api/releases/download/${vosk_version}/vosk-model-en-${vosk_version}.zip
+
+# Unzip the downloaded model
+unzip vosk-model-en-${vosk_version}.zip
+
+# Rename the extracted model to "vosk_model"
+mv vosk-model-en-${vosk_version} akulai/vosk_model
+
+# Clean up the downloaded archive and extracted subdirectory
+rm -rf $subdir $subdir.tar vosk-model-en-${vosk_version}.zip
+
 # Ask the user if they are using Ubuntu
 read -p "Are you using Ubuntu? (y/n) " choice
 
