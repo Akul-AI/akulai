@@ -22,7 +22,7 @@ class AkulAI:
             if file.endswith(".py"):
                 plugin_name = os.path.splitext(file)[0]
                 extension = os.path.splitext(file)[1]
-                self.plugins[plugin_name] = {"handle": self.load_plugin(file, extension), "extension": extension}
+                self.plugins[plugin_name] = {"handle": self.load_plugin(file, extension), "extension": ".py"}
             elif file.endswith(".js"):
                 plugin_name = os.path.splitext(file)[0]
                 self.plugins[plugin_name] = {"handle": self.load_plugin(file), "extension": ".js"}
