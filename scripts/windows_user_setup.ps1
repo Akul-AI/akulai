@@ -43,6 +43,19 @@ if ($choice -eq "y") {
     # Download and install the latest version of Node.js
     Invoke-WebRequest -Uri "https://nodejs.org/dist/latest-version/node-x64.msi" -OutFile "node-x64.msi"
     Start-Process "msiexec" -ArgumentList "/i node-x64.msi /quiet" -Wait
+    
+    # Download and install the latest version of espeak-ng
+    $espeak_ng_url = (Invoke-WebRequest -Uri "https://sourceforge.net/projects/espeak/files/espeak-ng/" | Select-String -Pattern "href=".*espeak-ng.*msi"").line
+    $espeak_ng_url = $espeak_ng_url -replace "href=","" -replace """,""
+    Invoke-WebRequest -Uri "https://sourceforge.net$espeak_ng_url" -OutFile "espeak-ng.msi"
+    Start-Process "msiexec" -ArgumentList "/i espeak-ng.msi /quiet" -Wait
+    
+    # Download and install the latest version of ActivePerl
+    $activeperl_url = (Invoke-WebRequest -Uri "https://downloads.activestate.com/ActivePerl/releases" | Select-String -Pattern "href=".*ActivePerl.*msi"").line
+    $activeperl_url = $activeperl_url -replace "href=","" -replace """,""
+    Invoke-WebRequest -Uri $activeperl_url -OutFile "ActivePerl.msi"
+    Start-Process "msiexec" -ArgumentList "/i ActivePerl.msi /quiet" -Wait
+    
 }
 else {
     Write-Host "This script is only compatible with Windows. Check for other scripts that support your system. Exiting..."
