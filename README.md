@@ -14,9 +14,9 @@ Please share this and contribute to it, I would love to get some help. If you do
 
 ## How do I create a skill...??
 
-Check the `create_plugins.md` file. We now support JS plugins too! (To share your plugins, see the [akulai_plugins](https://github.com/Akul-AI/akulai_plugins) repository.
+Check the `create_plugins.md` file. We now support JS and Perl plugins too! (To share your plugins, see the [akulai_plugins](https://github.com/Akul-AI/akulai_plugins) repository.
 
-## What happened to the other one?
+## What happened to the other version?
 
 Go to the [master-v1 branch](https://github.com/Akul-AI/akulai/tree/master-v1) for the code. If you did see this code when it was being developed, thank you for supporting us for so long!
 
