@@ -5,7 +5,16 @@ Make sure you have set up the program with either manual installation or by usin
 The AkulAI class allows for the use of plugins to extend its functionality. Plugins can be written in both Python and JavaScript and are located in the "plugins" directory.
 
 ## Creating a Plugin
-To create a plugin, simply create a new file in the "plugins" directory with the desired behavior. The file should be named with the name of the plugin and the file extension of either .py or .js.
+To create a plugin, simply create a new folder in the "plugins" directory with the desired behavior. Add a file in it. The file should be named with the name of the plugin and the file extension of either .py, .pl, or .js.
+
+Next, create a file in your sub directory called `plugin.info`. It should look something like this:
+
+```
+author: John Doe
+dependencies: requests, pandas
+```
+
+The dependencies may vary based on your project. Note that when listing the dependencies, list them by the name you installed them. For example, if you installed a dependency with `pip install py-example`(note that this is an example, and applies to all languages), but imported it with `import example`, you would still list the dependency `as py-example`. If you have no dependencies required to be installed, just leave it blank. 
 
 ## Python Plugins
 Python plugins should be written as a function called `handle(akulai, command)` where `akulai` is an instance of the `AkulAI` class and `command` is the string of the command that the user said.
