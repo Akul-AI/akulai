@@ -20,6 +20,7 @@ class AkulAI:
 
     def discover_plugins(self):
         for root, dirs, files in os.walk("plugins"):
+            extension = os.path.splitext(file)[1]
             for file in files:
                 if file.endswith(".py"):
                     plugin_name = os.path.splitext(file)[0]
