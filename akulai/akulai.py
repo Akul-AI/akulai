@@ -19,22 +19,45 @@ class AkulAI:
         self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
 
     def discover_plugins(self):
-        for file in os.listdir("plugins"):
-            if file.endswith(".py"):
-                plugin_name = os.path.splitext(file)[0]
-                extension = os.path.splitext(file)[1]
-                self.plugins[plugin_name] = {"handle": self.load_plugin(file, extension), "extension": ".py"}
-            elif file.endswith(".js"):
-                plugin_name = os.path.splitext(file)[0]
-                self.plugins[plugin_name] = {"handle": self.load_plugin(file), "extension": ".js"}
-            elif file.endswith(".pl"):
-                plugin_name = os.path.splitext(file)[0]
-                self.plugins[plugin_name] = {"handle": self.load_plugin(file), "extension": ".pl"}
+        for root, dirs, files in os.walk("plugins"):
+            for file in files:
+                if file.endswith(".py"):
+                    plugin_name = os.path.splitext(file)[0]
+                    extension = os.path.splitext(file)[1]
+                    self.check_info(root, plugin_name, extension)
+                    self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file), extension), "extension": ".py"}
+                elif file.endswith(".js"):
+                    plugin_name = os.path.splitext(file)[0]
+                    self.check_info(root, plugin_name, extension)
+                    self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)), "extension": ".js"}
+                elif file.endswith(".pl"):
+                    plugin_name = os.path.splitext(file)[0]
+                    self.check_info(root, plugin_name, extension)
+                    self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)), "extension": ".pl"}
+
+    def check_info(self, root, plugin_name, extension):
+        info_file = os.path.join(root, plugin_name, 'plugin.info')
+        if os.path.isfile(info_file):
+            with open(info_file) as f:
+                lines = f.readlines()
+                for line in lines:
+                    if 'dependencies' in line:
+                        dependencies = line.split(':')[1].strip()
+                        if extension == ".py":
+                            subprocess.run(["pip", "install", dependencies])
+                        elif extension == ".js":
+                            subprocess.run(["npm", "install", dependencies])
+                        elif extension == ".pl":
+                            subprocess.run(["ppm", "install", dependencies])
+                        print(f"{plugin_name} has the following dependencies: {dependencies}")
+                    elif 'author' in line:
+                        author = line.split(':')[1].strip()
+                        print(f"{plugin_name} was written by: {author}")
 
     def load_plugin(self, file):
-        with open(f"plugins/{file}", "r") as f:
+        with open(file, "r") as f:
             return f.read()
-
+ 
     def listen(self):
         while not self.stop_listening.is_set():
             data = self.stream.read(self.recognizer.sample_rate, exception_on_overflow = False)
