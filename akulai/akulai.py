@@ -43,13 +43,16 @@ class AkulAI:
                 for line in lines:
                     if 'dependencies' in line:
                         dependencies = line.split(':')[1].strip()
-                        if extension == ".py":
-                            subprocess.run(["pip", "install", dependencies])
-                        elif extension == ".js":
-                            subprocess.run(["npm", "install", dependencies])
-                        elif extension == ".pl":
-                            subprocess.run(["ppm", "install", dependencies])
-                        print(f"{plugin_name} has the following dependencies: {dependencies}")
+                        if dependencies:
+                            if extension == ".py":
+                                subprocess.run(["pip", "install", dependencies])
+                            elif extension == ".js":
+                                subprocess.run(["npm", "install", dependencies])
+                            elif extension == ".pl":
+                                subprocess.run(["ppm", "install", dependencies])
+                            print(f"{plugin_name} has the following dependencies: {dependencies}")
+                        else:
+                            print(f"{plugin_name} has no dependencies.")
                     elif 'author' in line:
                         author = line.split(':')[1].strip()
                         print(f"{plugin_name} was written by: {author}")
