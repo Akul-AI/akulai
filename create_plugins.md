@@ -52,6 +52,22 @@ It all depends on your plugin and preference.
 
 Keep in mind that when making plugins which require packages, the `node_modules` directory and the `package.json` file belong in the root directory.
 
+## Perl Plugins
+
+Here is an example of a Perl plugin:
+
+``` perl
+#!/usr/bin/perl
+
+my $akulai = shift;
+my $command = shift;
+
+if ($command eq "hello") {
+    $akulai->speak("Hello, World!");
+}
+```
+This plugin uses the `speak()` method from the `AkulAI` class to output the text "Hello, World!" when the command "hello" is recognized. The Perl plugin takes in self and command as arguments, and it uses the command variable to check if the command is "hello" and if true, it calls the speak method of the `AkulAI` class.
+
 ## Using a Plugin
 Once a plugin has been created, it will automatically be loaded and available for use when the `AkulAI` class is instantiated. The `AkulAI` class will search for any files with the extensions of ".py" or ".js" in the "plugins" directory, and will add them to the list of available plugins.
 
