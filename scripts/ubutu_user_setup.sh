@@ -6,57 +6,51 @@ subdir="default_plugins"
 
 # Create the "akulai/plugins" folder if it doesn't exist
 if [ ! -d "akulai/plugins" ]; then
-    mkdir -p akulai/plugins
+  mkdir -p "akulai/plugins"
 fi
 
 # Change directory to the parent directory of the script
 cd ..
 
-# Download the subdirectory from the GitHub repository
-curl -LJO $repo_url/tree/master/$subdir
-
-# Extract the files from the downloaded archive
-tar xvf $subdir.tar
+# Use git submodules to fetch the default_plugins subdir in the akulai plugins repo
+git submodule add $repo_url
+git submodule update --init --recursive
 
 # Move the files from the subdirectory to the local "akulai/plugins" folder
-mv $subdir/* akulai/plugins/
+mv "$subdir"/* "akulai/plugins"
 
-# Clean up the downloaded archive and extracted subdirectory
-rm -rf $subdir $subdir.tar
+# Use wget to download vosk
+wget "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
 
-# Get the latest version of the vosk model
-vosk_version=$(curl -s https://api.github.com/repos/alphacep/vosk-api/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')
-
-# Download the latest English vosk model
-curl -LJO https://github.com/alphacep/vosk-api/releases/download/${vosk_version}/vosk-model-en-${vosk_version}.zip
-
-# Unzip the downloaded model
-unzip vosk-model-en-${vosk_version}.zip
+# Extract the downloaded model
+unzip "vosk-model-small-en-us-0.15.zip" -d "akulai"
 
 # Rename the extracted model to "vosk_model"
-mv vosk-model-en-${vosk_version} akulai/vosk_model
+mv "akulai/vosk-model-small-en-us-0.15" "akulai/vosk_model"
 
 # Clean up the downloaded archive and extracted subdirectory
-rm -rf $subdir $subdir.tar vosk-model-en-${vosk_version}.zip
+rm -r "$subdir"
+rm "$subdir.zip"
+rm "vosk-model-small-en-us-0.15.zip"
 
-# Ask the user if they are using Ubuntu
+# Ask the user if they are using Windows
 read -p "Are you using Ubuntu? (y/n) " choice
 
 if [ "$choice" = "y" ]; then
-    # Download and install the latest version of Node.js
-    curl -sL https://deb.nodesource.com/setup_current.x | sudo -E bash -
-    sudo apt-get install -y nodejs
-
-    # Download the latest version of espeakng
-    sudo apt-get install espeak-ng
-    
-    # Download and install the Perl interpreter
-    sudo apt-get install -y perl
-
-    # Download and install cpanm
-    curl -L https://cpanmin.us | perl - App::cpanminus
-
+    # Install Node.js and espeak-ng
+    sudo apt-get update
+    sudo apt-get install -y nodejs espeak-ng
+    # Install the latest version of ActivePerl
+    sudo apt-get install -y libperl-dev
+    wget -O - "https://www.cpan.org/src/5.0/perl-5.32.0.tar.gz" | tar xz
+    cd perl-5.32.0
+    ./Configure -des -Dprefix=$HOME/perl
+    make
+    make test
+    make install
+    echo 'export PATH=$HOME/perl/bin:$PATH' >> ~/.bashrc
+    source ~/.bashrc
 else
-    echo "This script is only compatible with Ubuntu. Check for other scripts that support your system. Exiting..."
-    exit 1
+    echo "This script is only compatible with Ubuntu. Check for other scripts that support Windows. Exiting..."
+    exit
 fi
