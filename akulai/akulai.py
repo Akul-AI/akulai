@@ -3,7 +3,7 @@ import threading
 import vosk
 import pyaudio
 import espeakng
-import PyNodeJS
+import pynodejs
 import subprocess
 
 class AkulAI:
@@ -78,7 +78,7 @@ class AkulAI:
                     if plugin_module["extension"]=='.py':
                         plugin_module["handle"](self,command)
                     elif plugin_module["extension"]=='.js':
-                        PyNodeJS.execute_js(f'''
+                        pynodejs.execute_js(f'''
                             const akulAI = {self};
                             {plugin_module["handle"]}
                         ''')
