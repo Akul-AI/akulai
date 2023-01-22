@@ -49,6 +49,13 @@ if [ "$choice" = "y" ]; then
 
     # Download the latest version of espeakng
     sudo apt-get install espeak-ng
+    
+    # Download and install the Perl interpreter
+    sudo apt-get install -y perl
+
+    # Download and install cpanm
+    curl -L https://cpanmin.us | perl - App::cpanminus
+
 else
     echo "This script is only compatible with Ubuntu. Check for other scripts that support your system. Exiting..."
     exit 1
