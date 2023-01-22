@@ -17,8 +17,9 @@ class AkulAI:
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
 
+    # Looks for subdirs in the plugin directory, and scans them for the file types py, js, and pl
     def discover_plugins(self):
-        for root, dirs, files in os.walk("plugins"):
+        for root, files in os.walk("plugins"):
             extension = os.path.splitext(file)[1]
             for file in files:
                 if file.endswith(".py"):
@@ -35,6 +36,7 @@ class AkulAI:
                     self.check_info(root, plugin_name, extension)
                     self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)), "extension": ".pl"}
 
+    # Checks for the plugin.info file and installs any required dependencies based on what file type the plugin was made with
     def check_info(self, root, plugin_name, extension):
         info_file = os.path.join(root, plugin_name, 'plugin.info')
         if os.path.isfile(info_file):
@@ -57,19 +59,22 @@ class AkulAI:
                         author = line.split(':')[1].strip()
                         print(f"{plugin_name} was written by: {author}")
 
+    # Loads the plugins
     def load_plugin(self, file):
         with open(file, "r") as f:
             return f.read()
- 
+    # Listen for audio input through mic with pyaudio and vosk
     def listen(self):
         while not self.stop_listening.is_set():
-            data = self.stream.read(self.recognizer.sample_rate, exception_on_overflow = False)
+            data = self.stream.read(self.recognizer.rate, exception_on_overflow = False)
             if len(data) == 0:
                 break
             if self.recognizer.AcceptWaveform(data):
                 result = self.recognizer.Result()
                 self.process_command(result)
-       
+
+    # Processes given command and scans the plugins for one that can complete the command. 
+    # If none are found, give error and listen for next command.
     def process_command(self, command):
         for plugin_name in self.plugins:
             if plugin_name in command:
