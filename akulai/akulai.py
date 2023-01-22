@@ -4,6 +4,7 @@ import vosk
 import pyaudio
 import espeakng
 import PyNodeJS
+import subprocess
 
 class AkulAI:
     def __init__(self):
@@ -26,6 +27,9 @@ class AkulAI:
             elif file.endswith(".js"):
                 plugin_name = os.path.splitext(file)[0]
                 self.plugins[plugin_name] = {"handle": self.load_plugin(file), "extension": ".js"}
+            elif file.endswith(".pl"):
+                plugin_name = os.path.splitext(file)[0]
+                self.plugins[plugin_name] = {"handle": self.load_plugin(file), "extension": ".pl"}
 
     def load_plugin(self, file):
         with open(f"plugins/{file}", "r") as f:
@@ -52,6 +56,8 @@ class AkulAI:
                             const akulAI = {self};
                             {plugin_module["handle"]}
                         ''')
+                    elif plugin_module["extension"]=='.pl':
+                        subprocess.run(["perl", f"plugins/{plugin_name}.pl", self, command])
                 except Exception as e:
                     self.speak(f"An error occurred while running the plugin {plugin_name}: {str(e)}")
                     raise
