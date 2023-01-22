@@ -1,4 +1,4 @@
-espeakng
+py-espeak-ng
 vosk
 pyaudio
 PyNodeJS
