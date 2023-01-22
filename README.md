@@ -1,6 +1,6 @@
 # AkulAI Core
 
-NOTE: TAKE A LOOK AT VERSION 2.0.0 (in progress). IT SUPPORTS JS PLUGINS TOO AND IS VERY LIGHTWEIGHT IN COMPARISON TO THIS!
+NOTE: TAKE A LOOK AT VERSION 2.0.0 (in progress). IT SUPPORTS JS AND PERL PLUGINS TOO AND IS VERY LIGHTWEIGHT IN COMPARISON TO THIS!
 
 First off, don't forget to download the ASR model from [here](https://alphacephei.com/vosk/models), unzip it, rename it to ```model``` and place it in the ```akulai``` directory. It won't work without that.
 
