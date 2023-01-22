@@ -2,7 +2,6 @@ import os
 import threading
 import vosk
 import pyaudio
-import espeakng
 import pynodejs
 import subprocess
 
@@ -92,8 +91,7 @@ class AkulAI:
         self.speak("I'm sorry, I didn't understand that command.")
 
     def speak(self,text):
-        aispeaker = espeakng.speaker()
-        aispeaker.say(text)
+        subprocess.run(["espeak-ng", text])
 
     def stop(self):
         self.stop_listening.set()
