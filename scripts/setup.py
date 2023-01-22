@@ -9,18 +9,14 @@ os.chdir("..")
 
 # Define the GitHub repository URL and subdirectory
 repo_url = "https://github.com/Akul-AI/akulai-plugins"
-subdir = "default_plugins"
-
-# Create the "akulai/plugins" folder if it doesn't exist
-if not os.path.exists("akulai/plugins"):
-    os.makedirs("akulai/plugins")
+subdir = "plugins"
 
 # Use git submodules to fetch the default_plugins subdir in the akulai plugins repo
 os.system("git submodule add {}".format(repo_url))
 os.system("git submodule update --init --recursive")
 
 # Move the files from the subdirectory to the local "akulai/plugins" folder
-shutil.move("{}/".format(f"akulai-plugins/{subdir}"), "akulai/plugins/")
+shutil.move("{}/".format(f"akulai-plugins/{subdir}"), "akulai/")
 
 # Delete the files after copyiong them
 shutil.rmtree("akulai-plugins")

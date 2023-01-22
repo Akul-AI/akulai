@@ -1,6 +1,6 @@
 # Files from setup
 .gitmodules
-akulai-plugins
+akulai/akulai-plugins
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
