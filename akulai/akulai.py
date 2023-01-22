@@ -49,7 +49,7 @@ class AkulAI:
                             elif extension == ".js":
                                 subprocess.run(["npm", "install", dependencies])
                             elif extension == ".pl":
-                                subprocess.run(["ppm", "install", dependencies])
+                                subprocess.run(["cpanm", dependencies])
                             print(f"{plugin_name} has the following dependencies: {dependencies}")
                         else:
                             print(f"{plugin_name} has no dependencies.")
