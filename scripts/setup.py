@@ -48,30 +48,24 @@ if current_os == "Windows":
         f.write(response.content)
     os.system("msiexec /i node-x64.msi /quiet")
 
-    # Download and install ActivePerl
-    activeperl_url = "https://downloads.activestate.com/ActivePerl/releases/5.32.0.320/ActivePerl-5.32.0-320-x86_64-mswin64-64int.msi"
-    response = requests.get(activeperl_url)
-    with open("ActivePerl.msi", "wb") as f:
+    # Download Strawberry Perl for Windows
+    strawberry_perl_url = "http://strawberryperl.com/download/5.32.0.1/strawberry-perl-5.32.0.1-64bit.msi"
+    response = requests.get(strawberry_perl_url)
+    with open("strawberry-perl.msi", "wb") as f:
         f.write(response.content)
-        os.system("msiexec /i ActivePerl.msi /quiet")
-        
-        # Add the Perl executable to the system path
-        os.system('setx path "%path%;C:\Perl64\bin"')
+    os.system("msiexec /i strawberry-perl.msi /quiet")
+
+    # Add the Perl executable to the system path
+    os.system('setx path "%path%;C:\Perl64\bin"')
 
 elif current_os == "Linux":
     # Install Node.js
     os.system("sudo apt-get update")
     os.system("sudo apt-get install -y nodejs")
-    # Install the latest version of ActivePerl
-    os.system("sudo apt-get install -y libperl-dev")
-    os.system("wget -O - https://www.cpan.org/src/5.0/perl-5.32.0.tar.gz | tar xz")
-    os.chdir("perl-5.32.0")
-    os.system("./Configure -des -Dprefix=$HOME/perl")
-    os.system("make")
-    os.system("make test")
-    os.system("make install")
-    os.system("echo 'export PATH=$HOME/perl/bin:$PATH' >> ~/.bashrc")
-    os.system("source ~/.bashrc")
+    # Download Strawberry Perl for Linux
+    os.system("wget http://strawberryperl.com/download/5.32.0.1/strawberry-perl-5.32.0.1-64bit.tar.bz2")
+    os.system("tar -xjf strawberry-perl-5.32.0.1-64bit.tar.bz2")
+    os.system("./strawberry-perl-5.32.0.1-64bit/install.pl")
 else:
     print("This script only supports Windows and Ubuntu. Exiting...")
 
