@@ -18,7 +18,7 @@ class AkulAI:
             self.model = vosk.Model("akulai\\vosk_model")
         elif platform.system() == "Linux":
             self.model = vosk.Model("akulai/vosk_model")
-        self.recognizer = vosk.KaldiRecognizer(self.model, rate=16000)
+        self.recognizer = vosk.KaldiRecognizer(self.model, 16000)
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
 
@@ -74,7 +74,7 @@ class AkulAI:
     # Listen for audio input through mic with pyaudio and vosk
     def listen(self):
         while not self.stop_listening.is_set():
-            data = self.stream.read(self.recognizer.rate, exception_on_overflow = False)
+            data = self.stream.read(16000, exception_on_overflow = False)
             if len(data) == 0:
                 break
             if self.recognizer.AcceptWaveform(data):
@@ -112,10 +112,7 @@ class AkulAI:
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
-   
+
 if __name__ == "__main__":
     akulai = AkulAI()
-    print("say quit or exit to stop the program")
-    if akulai.command == "quit" or "exit":
-        akulai.stop()
-        exit()
+    
