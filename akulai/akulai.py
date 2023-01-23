@@ -105,3 +105,10 @@ class AkulAI:
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
+   
+if __name__ == "__main__":
+    akulai = AkulAI()
+    print("say quit or exit to stop the program")
+    if akulai.command == "quit" or "exit":
+        akulai.stop()
+        exit()
