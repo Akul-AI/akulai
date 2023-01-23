@@ -18,11 +18,11 @@ class AkulAI:
             self.model = vosk.Model("akulai\\vosk_model")
         elif platform.system() == "Linux":
             self.model = vosk.Model("akulai/vosk_model")
-        self.recognizer = vosk.KaldiRecognizer(self.model, rate=16000)
-        self.p = pyaudio.PyAudio()
-        self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
+        self.mic = pyaudio.PyAudio()
+        self.stream = self.mic.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192)
+        self.stream.start_stream()
 
-    # Looks for subdirs in the plugin directory, and scans them for the file types py, js, and pl
+    # Looks for subdirs in the plugin directory, and scans them for the file types py, js, and pl.
     def discover_plugins(self):
         for root, files in os.walk("plugins"):
             extension = os.path.splitext(file)[1]
@@ -41,7 +41,8 @@ class AkulAI:
                     self.check_info(root, plugin_name, extension)
                     self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)), "extension": ".pl"}
 
-    # Checks for the plugin.info file and installs any required dependencies based on what file type the plugin was made with
+    # Checks for the plugin.info file and installs any required 
+    # dependencies based on what file type the plugin was made with.
     def check_info(self, root, plugin_name, extension):
         info_file = os.path.join(root, plugin_name, 'plugin.info')
         if os.path.isfile(info_file):
@@ -71,15 +72,19 @@ class AkulAI:
     def load_plugin(self, file):
         with open(file, "r") as f:
             return f.read()
+
     # Listen for audio input through mic with pyaudio and vosk
     def listen(self):
+        self.stream.start_stream()
+        print("Listening...")
         while not self.stop_listening.is_set():
-            data = self.stream.read(self.recognizer.rate, exception_on_overflow = False)
-            if len(data) == 0:
-                break
+            data = self.stream.read(4096)
             if self.recognizer.AcceptWaveform(data):
-                result = self.recognizer.Result()
-                self.process_command(result)
+                text = self.recognizer.Result()
+                print(f"You Said : {text}")
+                if text:
+                    self.stop_listening.set()
+        self.stream.stop_stream()
 
     # Processes given command and scans the plugins for one that can complete the command. 
     # If none are found, give error and listen for next command.
@@ -115,7 +120,10 @@ class AkulAI:
    
 if __name__ == "__main__":
     akulai = AkulAI()
-    print("say quit or exit to stop the program")
-    if akulai.command == "quit" or "exit":
+    print("say or type quit or exit to stop the program")
+    input()
+    if akulai.listen() == "quit" or "exit":
         akulai.stop()
+        exit()
+    elif input() == "quit" or "exit":
         exit()
