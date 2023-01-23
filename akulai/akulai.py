@@ -105,5 +105,3 @@ class AkulAI:
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
-        
-akulai = AkulAI()
