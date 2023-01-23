@@ -5,6 +5,7 @@ import pyaudio
 import pynodejs
 import subprocess
 import threading
+import platform
 
 class AkulAI:
     def __init__(self):
@@ -13,7 +14,10 @@ class AkulAI:
         self.listening_thread.start()
         self.plugins = {}
         self.discover_plugins()
-        self.model = vosk.Model("vosk_model")
+        if platform.system() == "Windows":
+            self.model = vosk.Model("akulai\\vosk_model")
+        elif platform.system() == "Linux":
+            self.model = vosk.Model("akulai/vosk_model")
         self.recognizer = vosk.KaldiRecognizer(self.model, rate=16000)
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
