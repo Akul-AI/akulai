@@ -63,6 +63,9 @@ class AkulAI:
                     elif 'author' in line:
                         author = line.split(':')[1].strip()
                         print(f"{plugin_name} was written by: {author}")
+                    elif 'description' in line:
+                        description = line.split(':')[1].strip()
+                        print(f"Plugin Description: {description}")
 
     # Loads the plugins
     def load_plugin(self, file):
