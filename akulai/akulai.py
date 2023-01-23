@@ -4,6 +4,7 @@ import vosk
 import pyaudio
 import pynodejs
 import subprocess
+import threading
 
 class AkulAI:
     def __init__(self):
