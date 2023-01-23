@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd ..
 repo_url="https://github.com/Akul-AI/akulai-plugins"
 subdir="plugins"
