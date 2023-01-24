@@ -113,6 +113,3 @@ class AkulAI:
         self.stream.close()
         self.p.terminate()
 
-if __name__ == "__main__":
-    akulai = AkulAI()
-    

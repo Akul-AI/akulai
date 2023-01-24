@@ -2,7 +2,10 @@
  - [ ] Implement NLP
  - [ ] Optimize current code for fastest speed
  - [ ] Gain a bigger community lol
- - [ ] Add support for more languages
+ - [ ] Split code into smaller files for easier maintenance
 
 # Later
-Nothing yet!
+ - [ ] Add support for more languages (Ruby, Go, and Java - eventually)
+ 
+# Done
+None yet (sadly).
