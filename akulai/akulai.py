@@ -7,23 +7,20 @@ import subprocess
 import threading
 import platform
 
-from events.eventhook import Event_hook
-
 class AkulAI:
     def __init__(self):
+        self.stop_listening = threading.Event()
+        self.listening_thread = threading.Thread(target=self.listen)
+        self.listening_thread.start()
         self.plugins = {}
         self.discover_plugins()
         if platform.system() == "Windows":
-            vosk_model = Model('akulai\\vosk_model')
+            self.model = vosk.Model("akulai\\vosk_model")
         elif platform.system() == "Linux":
-            vosk_model = Model('akulai/vosk_model')
-        self.r = KaldiRecognizer(vosk_model, 16000)
-        self.m = PyAudio()
-        self.audio = self.m.open(format=paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192)
-        self.audio.start_stream()
-        # Setup event hooks
-        self.before_listening = Event_hook()
-        self.after_listening = Event_hook()
+            self.model = vosk.Model("akulai/vosk_model")
+        self.recognizer = vosk.KaldiRecognizer(self.model, rate=16000)
+        self.p = pyaudio.PyAudio()
+        self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
 
     # Looks for subdirs in the plugin directory, and scans them for the file types py, js, and pl
     def discover_plugins(self):
@@ -76,16 +73,13 @@ class AkulAI:
             return f.read()
     # Listen for audio input through mic with pyaudio and vosk
     def listen(self):
-        phrase = ""
-        if self.r.AcceptWaveform(self.audio.read(4096,exception_on_overflow = False)): 
-            self.before_listening.trigger()
-            phrase = self.r.Result()
-            phrase = phrase.removeprefix('the ')
-            phrase = str(json.loads(phrase)["text"])
-            if phrase:
-                self.after_listening.trigger(phrase)
-            return phrase
-            self.process_command(phrase)
+        while not self.stop_listening.is_set():
+            data = self.stream.read(self.recognizer.rate, exception_on_overflow = False)
+            if len(data) == 0:
+                break
+            if self.recognizer.AcceptWaveform(data):
+                result = self.recognizer.Result()
+                self.process_command(result)
 
     # Processes given command and scans the plugins for one that can complete the command. 
     # If none are found, give error and listen for next command.
