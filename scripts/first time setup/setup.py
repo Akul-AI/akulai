@@ -66,6 +66,8 @@ elif current_os == "Linux":
     os.system("wget http://strawberryperl.com/download/5.32.0.1/strawberry-perl-5.32.0.1-64bit.tar.bz2")
     os.system("tar -xjf strawberry-perl-5.32.0.1-64bit.tar.bz2")
     os.system("./strawberry-perl-5.32.0.1-64bit/install.pl")
+    os.system("sudo apt-get update")
+    os.system("sudo apt-get install espeak-ng")
 else:
     print("This script only supports Windows and Ubuntu. Exiting...")
 
