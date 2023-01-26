@@ -118,6 +118,7 @@ class AkulAI:
     def speak(self, text):
         self.engine.say(text) 
         self.engine.runAndWait()
+        print(f"AkulAI said: {text}")
 
     # Shuts down the listening and speaking thread and then the entire program.
     def stop(self):
