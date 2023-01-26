@@ -1,0 +1,28 @@
+# Runs tests via tox
+# Runs on pull requests to main
+name: pulltest
+on:
+  pull_request:
+    branches: [main, master]
+    paths-ignore: ["**/*.md", "**/*.rst"]
+jobs:
+  build:
+    strategy:
+      max-parallel: 1
+      matrix:
+        os: [ubuntu-20.04]
+        python-version: ["3.9"]
+    runs-on: "${{ matrix.os }}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: "Set up Python ${{ matrix.python-version }}"
+        uses: actions/setup-python@v2
+        with:
+          python-version: "${{ matrix.python-version }}"
+      - name: Install build meta-dependencies
+        run: |
+          pip install tox poetry
+      - name: Test with tox
+        run: |
+          tox -v
