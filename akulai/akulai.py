@@ -20,10 +20,7 @@ class AkulAI:
         self.recognizer = vosk.KaldiRecognizer(self.model, 16000)
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
-        # Create everything needed to run pyttsx3 in it's own thread
-        self.stop_speaking = threading.Event()
-        self.speaking_thread = threading.Thread(target=self.speak)
-        self.speaking_thread.start()
+        # INitialize the pyttsx3 speech engine
         self.engine = pyttsx3.init()
         self.voices= self.engine.getProperty('voices') #getting details of current voice
         self.engine.setProperty('voice', self.voices[0].id)
@@ -123,9 +120,7 @@ class AkulAI:
     # Shuts down the listening and speaking thread and then the entire program.
     def stop(self):
         self.stop_listening.set()
-        self.stop_speaking.set()
         self.listening_thread.join()
-        self.speaking_thread.join()
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
@@ -136,4 +131,5 @@ if __name__ == "__main__":
     print("say something")
     akulai.listen()
     if akulai.listen() == "exit" or "quit":
+        self.speak("Okay, exiting")
         akulai.stop()
