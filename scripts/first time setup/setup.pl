@@ -32,12 +32,12 @@ unlink("vosk-model-small-en-us-0.15.zip");
 my $current_os = $^O;
 
 if ($current_os eq "MSWin32") {
-# Download and install Node.js
+
 my $node_url = "https://nodejs.org/dist/latest-version/node-x64.msi";
 getstore($node_url, "node-x64.msi");
 system("msiexec /i node-x64.msi /quiet");
 
 } elsif ($current_os eq "linux") {
-# Install Node.js
+
 system("sudo apt-get update");
 system("sudo apt-get install -y nodejs");
