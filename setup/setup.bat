@@ -10,7 +10,7 @@ DEL /S "akulai-plugins"
 SET vosk_url=https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
 curl "-o" "vosk-model-small-en-us-0.15.zip" "%vosk_url%"
 unzip "vosk-model-small-en-us-0.15.zip" "-d" "akulai"
-mv "akulai\vosk-model-small-en-us-0.15" "akulai\vosk_model"
+mv "akulai\models\vosk-model-small-en-us-0.15" "akulai\models\vosk_model"
 DEL  "vosk-model-small-en-us-0.15.zip"
 sudo "apt-get" "update"
 sudo "apt-get" "install" "-y" "nodejs"
