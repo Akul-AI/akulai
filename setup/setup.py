@@ -11,14 +11,14 @@ os.chdir("..")
 repo_url = "https://github.com/Akul-AI/akulai-plugins"
 subdir = "plugins"
 
-# Use git submodules to fetch the default_plugins subdir in the akulai plugins repo
+# Use git submodules to fetch the plugins subdir in the akulai plugins repo
 os.system("git submodule add {}".format(repo_url))
 os.system("git submodule update --init --recursive")
 
 # Move the files from the subdirectory to the local "akulai/plugins" folder
 shutil.move("{}/".format(f"akulai-plugins/{subdir}"), "akulai/")
 
-# Delete the files after copyiong them
+# Delete the files after copying them
 shutil.rmtree("akulai-plugins")
 
 # Use requests library to download vosk
@@ -29,10 +29,10 @@ with open("vosk-model-small-en-us-0.15.zip", "wb") as f:
 
 # Extract the downloaded model
 with zipfile.ZipFile("vosk-model-small-en-us-0.15.zip", "r") as zip_ref:
-    zip_ref.extractall("akulai")
+    zip_ref.extractall("akulai/model")
 
 # Rename the extracted model to "vosk_model"
-os.rename("akulai/vosk-model-small-en-us-0.15", "akulai/vosk_model")
+os.rename("akulai/model/vosk-model-small-en-us-0.15", "akulai/model/vosk_model")
 
 # Clean up the downloaded archive
 os.remove("vosk-model-small-en-us-0.15.zip")
