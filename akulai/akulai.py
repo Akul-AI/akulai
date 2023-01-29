@@ -4,7 +4,6 @@ import vosk
 import pyaudio
 import threading
 import js2py
-import platform
 import pyttsx3
 
 class AkulAI:
@@ -13,10 +12,7 @@ class AkulAI:
         self.stop_listening = threading.Event()
         self.listening_thread = threading.Thread(target=self.listen)
         self.listening_thread.start()
-        if platform.system() == "Windows":
-            self.model = vosk.Model("akulai\\vosk_model")
-        elif platform.system() == "Linux":
-            self.model = vosk.Model("akulai/vosk_model")
+        self.model = vosk.Model("vosk_model")
         self.recognizer = vosk.KaldiRecognizer(self.model, 16000)
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
