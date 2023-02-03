@@ -1,4 +1,0 @@
-espeakng
-vosk
-pyaudio
-js2py

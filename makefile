@@ -3,7 +3,9 @@ clean:
 	rm -rf .gitmodules
 
 install:
+	cd requirements
   	pip install -r requirements.txt
+	cd ..
   	cd setup
   	python setup.py
 

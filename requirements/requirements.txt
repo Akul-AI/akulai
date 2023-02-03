@@ -1,0 +1,5 @@
+# Use only if you are going to use the program, not edit it
+pyttsx3
+vosk
+pyaudio
+js2py
