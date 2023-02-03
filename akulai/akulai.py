@@ -2,7 +2,6 @@ import os
 import threading
 import vosk
 import pyaudio
-import threading
 import js2py
 import pyttsx3
 import platform
