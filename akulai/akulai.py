@@ -28,7 +28,7 @@ class AkulAI:
         self.plugins = {}
         self.discover_plugins()
 
-    # Looks for subdirs in the plugin directory, and scans them for the file types py, js, and pl
+    # Looks for sub-directories in the plugin directory, and scans them for the file types py, js, and pl
     def discover_plugins(self):
         for root, files in os.walk("plugins"):
             extension = os.path.splitext(file)[1]
