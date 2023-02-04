@@ -3,7 +3,7 @@
 Note: First off, don't forget to download the ASR model from [here](https://alphacephei.com/vosk/models), unzip it, rename it to `vosk_model` and place it in the `akulai` directory. It won't work without that. Also make sure you have Node.js installed. And finally, for the perl plugins, install any kind of Perl installation, although I recommend Strawbery Perl. Also make sure that you have cpamn installed and have perl in your PATH for Windows.
 
 ### Installation
-Again, you may either follow the steps above, or you may use the provided python script. We have also provided a PowerShell, Perl, and Bash script. If you face any errors, however, please use the python script before reporting it.
+Again, you may either follow the steps above, or you may use the provided python script. We have also provided a Batch (CMD) and Bash script. If you face any errors, however, please use the python script before reporting it.
 
 Keep in mind that:
  - The Perl script assumes you already have a working installation of Perl, cpamn, and Python installed.
