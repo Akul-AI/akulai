@@ -6,6 +6,7 @@ import js2py
 import pyttsx3
 import platform
 
+
 class AkulAI:
     def __init__(self):
         # Create everything needed to run vosk in it's own thread
@@ -21,7 +22,7 @@ class AkulAI:
         self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
         # Initialize the pyttsx3 speech engine
         self.engine = pyttsx3.init()
-        self.voices= self.engine.getProperty('voices') #getting details of current voice
+        self.voices = self.engine.getProperty('voices')  # getting details of current voice
         self.engine.setProperty('voice', self.voices[0].id)
         # Create plugins dictionary
         self.plugins = {}
@@ -36,17 +37,21 @@ class AkulAI:
                     plugin_name = os.path.splitext(file)[0]
                     extension = os.path.splitext(file)[1]
                     self.check_info(root, plugin_name, extension)
-                    self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file), extension), "extension": ".py"}
+                    self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file), extension),
+                                                 "extension": ".py"}
                 elif file.endswith(".js"):
                     plugin_name = os.path.splitext(file)[0]
                     self.check_info(root, plugin_name, extension)
-                    self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)), "extension": ".js"}
+                    self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)),
+                                                 "extension": ".js"}
                 elif file.endswith(".pl"):
                     plugin_name = os.path.splitext(file)[0]
                     self.check_info(root, plugin_name, extension)
-                    self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)), "extension": ".pl"}
+                    self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)),
+                                                 "extension": ".pl"}
 
-    # Checks for the plugin.info file and installs any required dependencies based on what file type the plugin was made with
+    # Checks for the plugin.info file and installs any required dependencies based on
+    # what file type the plugin was made with
     def check_info(self, root, plugin_name, extension):
         info_file = os.path.join(root, plugin_name, 'plugin.info')
         if os.path.isfile(info_file):
@@ -80,7 +85,7 @@ class AkulAI:
     # Listen for audio input through mic with pyaudio and vosk
     def listen(self):
         while not self.stop_listening.is_set():
-            data = self.stream.read(16000, exception_on_overflow = False)
+            data = self.stream.read(16000, exception_on_overflow=False)
             if len(data) == 0:
                 break
             if self.recognizer.AcceptWaveform(data):
@@ -96,14 +101,14 @@ class AkulAI:
             if plugin_name in command:
                 try:
                     plugin_module = self.plugins[plugin_name]
-                    if plugin_module["extension"]=='.py':
-                        plugin_module["handle"](self,command)
-                    elif plugin_module["extension"] =='.js':
+                    if plugin_module["extension"] == '.py':
+                        plugin_module["handle"](self, command)
+                    elif plugin_module["extension"] == '.js':
                         js2py.eval_js(f'''
                             const akulAI = {self};
                             {plugin_module["handle"]}
                         ''')
-                    elif plugin_module["extension"]=='.pl':
+                    elif plugin_module["extension"] == '.pl':
                         os.system(f"perl plugins/{plugin_name}.pl", self, command)
                 except Exception as e:
                     self.speak(f"An error occurred while running the plugin {plugin_name}: {str(e)}")
@@ -124,6 +129,7 @@ class AkulAI:
         self.stream.close()
         self.p.terminate()
         exit()
+
 
 if __name__ == "__main__":
     akulai = AkulAI()
