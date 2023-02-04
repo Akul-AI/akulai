@@ -65,11 +65,20 @@ class AkulAI:
                         dependencies = line.split(':')[1].strip()
                         if dependencies:
                             if extension == ".py":
-                                os.system(f"pip install {dependencies}")
+                                try:
+                                    os.system(f"pip install {dependencies}")
+                                except Exception as e:
+                                    print(f"Error log:{e}")
                             elif extension == ".js":
-                                os.system(f"npm install {dependencies}")
+                                try:
+                                    os.system(f"npm install {dependencies}")
+                                except Exception as e:
+                                    print(f"Error log:{e}")
                             elif extension == ".pl":
-                                os.system(f"cpanm {dependencies}")
+                                try:
+                                    os.system(f"cpanm {dependencies}")
+                                except Exception as e:
+                                    print(f"Error log:{e}")
                             print(f"{plugin_name} has the following dependencies: {dependencies}")
                         else:
                             print(f"{plugin_name} has no dependencies.")
