@@ -1,6 +1,3 @@
-# Check http://editorconfig.org for more information
-# Useful: https://ukupat.github.io/tabs-or-spaces/
-
 root = true
 
 [*]
