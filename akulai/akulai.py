@@ -41,7 +41,7 @@ class AkulAI:
                     plugin_name = os.path.splitext(file)[0]
                     extension = os.path.splitext(file)[1]
                     self.check_info(root, plugin_name, extension)
-                    self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file), extension),
+                    self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)),
                                                  "extension": ".py"}
                 elif file.endswith(".js"):
                     plugin_name = os.path.splitext(file)[0]
