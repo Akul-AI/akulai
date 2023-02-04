@@ -1,4 +1,4 @@
-from akulai import AkulAI
+from akulai.akulai import AkulAI
 
 ai = AkulAI()
 
