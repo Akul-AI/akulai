@@ -9,10 +9,14 @@ import platform
 
 class AkulAI:
     def __init__(self):
-        # Create everything needed to run vosk in it's own thread
+        # Create the listening thread
         self.stop_listening = threading.Event()
         self.listening_thread = threading.Thread(target=self.listen)
         self.listening_thread.start()
+        # Create the speaking thread
+        self.stop_speaking = threading.Event()
+        self.speaking_thread = threading.Thread(target=self.speak)
+        self.speaking_thread.start()
         if platform.system() == "Windows":
             self.model = vosk.Model("model\\vosk_model")
         elif platform.system() == "Linux":
@@ -124,7 +128,9 @@ class AkulAI:
     # Shuts down the listening and speaking thread and then the entire program.
     def stop(self):
         self.stop_listening.set()
+        self.stop_speaking.set()
         self.listening_thread.join()
+        self.speaking_thread.join()
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
