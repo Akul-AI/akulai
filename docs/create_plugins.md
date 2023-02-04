@@ -12,7 +12,7 @@ Next, create a file in your sub directory called `plugin.info`. It should look s
 ```
 author: John Doe
 dependencies: requests, pandas
-description: This plugin.info file is an example. See the akulai_plugins repository for more examples.
+description: Lorem ipsum di olor nulla quis lorem ut libero malesuada feugiat. This plugin.info file is an example. See the akulai_plugins repository for more examples.
 ```
 
 The dependencies may vary based on your project. Note that when listing the dependencies, list them by the name you installed them. For example, if you installed a dependency with `pip install py-example`(note that this is an example, and applies to all languages), but imported it with `import example`, you would still list the dependency `as py-example`. If you have no dependencies required to be installed, just leave it blank. 
