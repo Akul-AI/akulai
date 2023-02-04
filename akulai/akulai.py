@@ -6,7 +6,6 @@ import js2py
 import pyttsx3
 import platform
 
-
 class AkulAI:
     def __init__(self):
         # Create the listening thread
@@ -135,7 +134,6 @@ class AkulAI:
         self.stream.close()
         self.p.terminate()
         exit()
-
 
 if __name__ == "__main__":
     akulai = AkulAI()
