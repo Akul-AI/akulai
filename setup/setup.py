@@ -1,3 +1,4 @@
+# If using this script on Windows, just keep in mind that this script needs to be run with administrator permissions.
 import os
 import shutil
 import zipfile
