@@ -2,6 +2,10 @@
 .gitmodules
 akulai/akulai-plugins
 
+# IDE files and folders
+./idea
+./vscode
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
