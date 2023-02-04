@@ -125,7 +125,7 @@ class AkulAI:
         self.engine.runAndWait()
         print(f"AkulAI said: {text}")
 
-    # Shuts down the listening and speaking thread and then the entire program.
+    # Shuts down the program and all threads + other operations it is running
     def stop(self):
         self.stop_listening.set()
         self.stop_speaking.set()
