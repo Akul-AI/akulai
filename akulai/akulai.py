@@ -76,7 +76,7 @@ class AkulAI:
     def load_plugin(self, file):
         with open(file, "r") as f:
             return f.read()
-        
+
     # Listen for audio input through mic with pyaudio and vosk
     def listen(self):
         while not self.stop_listening.is_set():
@@ -89,7 +89,7 @@ class AkulAI:
                 print(result)
                 print(f"You said: {result}")
 
-    # Processes given command and scans the plugins for one that can complete the command. 
+    # Processes given command and scans the plugins for one that can complete the command.
     # If none are found, give error and listen for next command.
     def process_command(self, command):
         for plugin_name in self.plugins:
@@ -98,7 +98,7 @@ class AkulAI:
                     plugin_module = self.plugins[plugin_name]
                     if plugin_module["extension"]=='.py':
                         plugin_module["handle"](self,command)
-                    elif plugin_module["extension"]=='.js':
+                    elif plugin_module["extension"] =='.js':
                         js2py.eval_js(f'''
                             const akulAI = {self};
                             {plugin_module["handle"]}
@@ -112,7 +112,7 @@ class AkulAI:
         self.speak("I'm sorry, I didn't understand that command.")
 
     def speak(self, text):
-        self.engine.say(text) 
+        self.engine.say(text)
         self.engine.runAndWait()
         print(f"AkulAI said: {text}")
 
