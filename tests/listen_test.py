@@ -1,8 +1,14 @@
+import unittest
+
 from akulai.akulai import AkulAI
 
-akulai = AkulAI
+class ListenTest(unittest.TestCase):
+    akulai = AkulAI()
 
-print("If this is working, whatever you say should print on the console.")
-print("Starting listening... now.")
+    def test_listen(self):
+        self.assertTrue(self.akulai.listening_thread.is_alive())
+        self.akulai.stop_listening.set()
+        self.akulai.listening_thread.join()
 
-akulai.listen()
+if __name__ == '__main__':
+    unittest.main()

@@ -2,7 +2,7 @@ import unittest
 import os
 from akulai.akulai import AkulAI
 
-class AkulAITest(unittest.TestCase):
+class DiscoverPluginsTest(unittest.TestCase):
     def test_discover_plugins(self):
         akulai = AkulAI()
 
