@@ -54,8 +54,7 @@ class AkulAI:
                     self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)),
                                                  "extension": ".pl"}
 
-    # Checks for the plugin.info file and installs any required dependencies based on
-    # what file type the plugin was made with
+    # Checks for the plugin.info file and installs any required dependencies.
     def check_info(self, root, plugin_name, extension):
         info_file = os.path.join(root, plugin_name, 'plugin.info')
         if os.path.isfile(info_file):
