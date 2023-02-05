@@ -26,7 +26,7 @@ class AkulAI:
         self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
         # Initialize the pyttsx3 speech engine
         self.engine = pyttsx3.init()
-        self.voices = self.engine.getProperty('voices')  # getting details of current voice
+        self.voices = self.engine.getProperty('voices')
         self.engine.setProperty('voice', self.voices[0].id)
         # Create plugins dictionary
         self.plugins = {}
