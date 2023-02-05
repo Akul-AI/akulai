@@ -2,7 +2,7 @@ Make sure you have set up the program with either manual installation or by usin
 
 # AkulAI Plugins
 
-The AkulAI class allows for the use of plugins to extend its functionality. Plugins can be written in both Python and JavaScript and are located in the "plugins" directory.
+The AkulAI class allows for the use of plugins to extend its functionality. Plugins can be written in both Python and JavaScript and are located in the `plugins` directory.
 
 ## Creating a Plugin
 To create a plugin, simply create a new folder in the "plugins" directory with the desired behavior. Add a file in it. The file should be named with the name of the plugin and the file extension of either .py, .pl, or .js.
