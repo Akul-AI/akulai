@@ -1,11 +1,4 @@
-import os
-import threading
-import vosk
-import pyaudio
-import js2py
-import pyttsx3
-import platform
-
+from import_modules import *
 
 class AkulAI:
     def __init__(self):
