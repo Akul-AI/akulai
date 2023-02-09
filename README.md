@@ -6,8 +6,7 @@ Note: First off, don't forget to download the ASR model from [here](https://alph
 Again, you may either follow the steps above, or you may use the provided python script. We have also provided a Batch (CMD) and Bash script. If you face any errors, however, please use the python script before reporting it.
 
 Keep in mind that:
- - The Perl script assumes you already have a working installation of Perl, cpamn, and Python installed.
- - Every other script also assumes you have a working installation of Python installed.
+ - All the scripts assume you have a working installation of Python installed.
 
 <hr>
 Version 2 is OUT! We plan to release a stable version sometime near the end of February, so stay tuned! I will update from time to time, but as a solo developer (during the time of writing), please don't expect a lot.
