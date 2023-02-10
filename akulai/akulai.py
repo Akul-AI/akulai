@@ -1,5 +1,6 @@
 from import_modules import *
 
+
 class AkulAI:
     def __init__(self):
         # Create the listening thread
