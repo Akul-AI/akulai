@@ -11,9 +11,9 @@ class AkulAI:
         self.stop_speaking = threading.Event()
         self.speaking_thread = threading.Thread(target=self.speak)
         self.speaking_thread.start()
-        if platform.system() == "Windows":
+        if system() == "Windows":
             self.model = vosk.Model("model\\vosk_model")
-        elif platform.system() == "Linux":
+        elif system() == "Linux":
             self.model = vosk.Model("model/vosk_model")
         self.recognizer = vosk.KaldiRecognizer(self.model, 16000)
         self.p = pyaudio.PyAudio()
