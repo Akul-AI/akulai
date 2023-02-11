@@ -31,18 +31,18 @@ class AkulAI:
         for root, files in os.walk("plugins"):
             extension = os.path.splitext(file)[1]
             for file in files:
-                if file == "akulai_plugin.py":
+                if file == "main.py":
                     plugin_name = os.path.splitext(file)[0]
                     extension = os.path.splitext(file)[1]
                     self.check_info(root, plugin_name, extension)
                     self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)),
                                                  "extension": ".py"}
-                elif file == "akulai_plugin.js":
+                elif file == "main.js":
                     plugin_name = os.path.splitext(file)[0]
                     self.check_info(root, plugin_name, extension)
                     self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)),
                                                  "extension": ".js"}
-                elif file == "akulai_plugin.pl":
+                elif file == "main.pl":
                     plugin_name = os.path.splitext(file)[0]
                     self.check_info(root, plugin_name, extension)
                     self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)),
