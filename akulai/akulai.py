@@ -149,6 +149,6 @@ if __name__ == "__main__":
     akulai = AkulAI()
     print("say something")
     akulai.listen()
-    if akulai.listen() == "exit" or "quit":
+    if akulai.listen() == "exit" or "quit" or "stop":
         akulai.speak("Okay, exiting")
         akulai.stop()
