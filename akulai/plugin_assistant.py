@@ -26,3 +26,6 @@ class PluginAssistant:
     def handle_command(self, text):
         for name, func in self.plugins.items():
             if name in text:
+                command = name.split(".")[1]
+                return func(command)
+        return ""
