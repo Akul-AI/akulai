@@ -1,29 +1,26 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import os
 import threading
 import vosk
 import pyaudio
 import js2py
+import json
 import pyttsx3
-from platform import system
 
 
 class AkulAI:
     def __init__(self):
+        # Initialize the VOSK speech to text engine
+        self.model = vosk.Model(os.path.join("model", "vosk_model"))
+        self.recognizer = vosk.KaldiRecognizer(self.model, 16000)
+        # Initialize the pyaudio device
+        self.p = pyaudio.PyAudio()
+        self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
         # Create the listening thread
         self.stop_listening = threading.Event()
         self.listening_thread = threading.Thread(target=self.listen)
         self.listening_thread.start()
-        # Create the speaking thread
-        self.stop_speaking = threading.Event()
-        self.speaking_thread = threading.Thread(target=self.speak)
-        self.speaking_thread.start()
-        if system() == "Windows":
-            self.model = vosk.Model("model\\vosk_model")
-        elif system() == "Linux":
-            self.model = vosk.Model("model/vosk_model")
-        self.recognizer = vosk.KaldiRecognizer(self.model, 16000)
-        self.p = pyaudio.PyAudio()
-        self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
         # Initialize the pyttsx3 speech engine
         self.engine = pyttsx3.init()
         self.voices = self.engine.getProperty('voices')
@@ -34,8 +31,7 @@ class AkulAI:
 
     # Looks for subdirectories in the plugin directory, and scans them for the file types py, js, and pl
     def discover_plugins(self):
-        for root, files in os.walk("plugins"):
-            extension = os.path.splitext(file)[1]
+        for root, dirs, files in os.walk("plugins"):
             for file in files:
                 if file == "main.py":
                     plugin_name = os.path.splitext(file)[0]
@@ -101,10 +97,14 @@ class AkulAI:
             if len(data) == 0:
                 break
             if self.recognizer.AcceptWaveform(data):
-                result = self.recognizer.Result()
-                self.process_command(result)
-                print(result)
-                print(f"You said: {result}")
+                result = json.loads(self.recognizer.Result())
+                if 'text' in result:
+                    print(f"You said: {result['text']}")
+                    if any([shutdown_command for shutdown_command in ['exit', 'quit', 'stop', 'shut down'] if shutdown_command in result['text']]):
+                        self.speak("Okay, exiting")
+                        self.stop()
+                    else:
+                        self.process_command(result['text'])
 
     # Processes given command and scans the plugins for one that can complete the command.
     # If none are found, give error and listen for next command.
@@ -129,16 +129,13 @@ class AkulAI:
         self.speak("I'm sorry, I didn't understand that command.")
 
     def speak(self, text):
+        print(f"AkulAI said: {text}")
         self.engine.say(text)
         self.engine.runAndWait()
-        print(f"AkulAI said: {text}")
 
     # Shuts down the program and all threads + other operations it is running
     def stop(self):
         self.stop_listening.set()
-        self.stop_speaking.set()
-        self.listening_thread.join()
-        self.speaking_thread.join()
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
@@ -148,7 +145,3 @@ class AkulAI:
 if __name__ == "__main__":
     akulai = AkulAI()
     print("say something")
-    akulai.listen()
-    if akulai.listen() == "exit" or "quit" or "stop":
-        akulai.speak("Okay, exiting")
-        akulai.stop()
