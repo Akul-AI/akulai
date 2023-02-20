@@ -136,6 +136,7 @@ class AkulAI:
     # Shuts down the program and all threads + other operations it is running
     def stop(self):
         self.stop_listening.set()
+        self.listening_thread.join()
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
