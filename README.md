@@ -21,6 +21,15 @@ Check the `create_plugins.md` file, located in the `docs` folder. We now support
 
 Go to the [master-v1 branch](https://github.com/Akul-AI/akulai/tree/master-v1) for the code. If you did see this code when it was being developed, thank you for supporting us for so long!
 
+## Contribution
+
+A follow-up to what I mentioned earlier, you can also check the CONTRIBUTING.md guide. Thanks to all the current contributors!
+
+<a href="https://github.com/Akul-AI/akulai/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Akul-AI/akulai" />
+</a>
+
+
 ## Pointless Information (Kinda)
 
 We use semantic versioning. That's it so far.
