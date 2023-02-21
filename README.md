@@ -1,3 +1,5 @@
+<b>NO LONGER IN PROGRESS</b>
+
 A WIP re-write of the code. I noticed it is rather hard to make new features in the main code, so I made a new re-write with hopefully easier code. Includes updated plugin system and a new self-learning capability. Only supports python plugins so far, though.
 
 # AkulAI
