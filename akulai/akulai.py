@@ -123,7 +123,7 @@ class AkulAI:
                     elif plugin_module["extension"] == '.pl':
                         os.system(f"perl plugins/{plugin_name}.pl", self, command)
                 except Exception as e:
-                    self.speak(f"An error occurred while running the plugin {plugin_name}: {str(e)}")
+                    self.speak(f"An error occurred while running the plugin {plugin_name}: {e}")
                     raise
                 return
         self.speak("I'm sorry, I didn't understand that command.")
