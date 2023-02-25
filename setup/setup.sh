@@ -14,7 +14,4 @@ mv "akulai/model/vosk-model-small-en-us-0.15" "akulai/model/vosk_model"
 rm "vosk-model-small-en-us-0.15.zip"
 sudo apt-get update
 sudo apt-get install -y nodejs
-wget "http://strawberryperl.com/download/5.32.0.1/strawberry-perl-5.32.0.1-64bit.tar.bz2"
-tar -xjf "strawberry-perl-5.32.0.1-64bit.tar.bz2"
-./strawberry-perl-5.32.0.1-64bit/install.pl
 pip install -r requirements.txt
