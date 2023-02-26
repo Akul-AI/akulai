@@ -9,7 +9,7 @@ Keep in mind that:
  - All the scripts assume you have a working installation of Python installed.
 
 <hr>
-Version 2 is OUT! We plan to release a stable version sometime near the end of February, so stay tuned! I will update from time to time, but as a solo developer (during the time of writing), please don't expect a lot.
+Version 2 is OUT! We plan to release a stable version sometime near the end of April (I know it said February before, but we're behind schedule and there is a lot to fix), so stay tuned! I will update from time to time, but as a solo developer (during the time of writing), please don't expect a lot.
 
 Please share this and contribute to it, I would love to get some help. If you don't know what to do to help, take a look at todo.md. Or the issues. Your choice.
 
