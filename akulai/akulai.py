@@ -73,12 +73,10 @@ class AkulAI:
 
     # Listen for audio input through mic with pyaudio and vosk
     def listen(self):
-        print("Listening")
         while not self.stop_listening.is_set():
             data = self.stream.read(16000, exception_on_overflow=False)
             if len(data) == 0:
                 break
-            print("AcceptWaveform")
             if self.recognizer.AcceptWaveform(data):
                 result = json.loads(self.recognizer.Result())
                 if 'text' in result:
@@ -90,7 +88,6 @@ class AkulAI:
                         self.execute_command(result['text'])
 
     def execute_command(self, command):
-        print("Executing command")
         for plugin in self.plugins:
             try:
                 response = plugin.handle(command)
