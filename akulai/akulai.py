@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-   
+import importlib.util
+import json
 import os
-import vosk
 import pyttsx3
 import pyaudio
-import importlib.util
+import subprocess
+import threading
+import vosk
+import pdb
 
 class AkulAI:
     def __init__(self):
@@ -14,14 +18,12 @@ class AkulAI:
         # Initialize the pyaudio device
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
-        # Create the listening thread
-        self.stop_listening = threading.Event()
-        self.listening_thread = threading.Thread(target=self.listen)
-        self.listening_thread.start()
         # Initialize the pyttsx3 speech engine
         self.engine = pyttsx3.init()
         self.voices = self.engine.getProperty('voices')
         self.engine.setProperty('voice', self.voices[0].id)
+        # load the plugins
+        self.discover_plugins()
         
     def speak(self, text):
         print(f"AkulAI said: {text}")
@@ -29,42 +31,45 @@ class AkulAI:
         self.engine.runAndWait()
 
     # Discover and load all plugins
-    self.plugins = []
-    for dirpath, dirnames, filenames in os.walk("plugins"):
-        for filename in filenames:
-            if filename.endswith(".py"):
-                # Load the Python plugin using importlib
-                plugin_path = os.path.join(dirpath, filename)
-                spec = importlib.util.spec_from_file_location("plugin", plugin_path)
-                plugin = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(plugin)
+    def discover_plugins(self):
+        self.plugins = []
+        for dirpath, dirnames, filenames in os.walk("plugins"):
+            for filename in filenames:
+                if filename.endswith(".py"):
+                    # Load the Python plugin using importlib
+                    plugin_path = os.path.join(dirpath, filename)
+                    spec = importlib.util.spec_from_file_location("plugin", plugin_path)
+                    plugin = importlib.util.module_from_spec(spec)
+                    spec.loader.exec_module(plugin)
 
-                # Add the plugin to the list
-                self.plugins.append(plugin)
+                    # Add the plugin to the list
+                    self.plugins.append(plugin)
+                    print(f"Loaded plugin from {plugin_path}")
 
-            elif filename.endswith(".pl"):
-                # Load the Perl plugin using subprocess
-                plugin_path = os.path.join(dirpath, filename)
-                import subprocess
-                result = subprocess.check_output(['perl', plugin_path])
-                plugin = result.decode('utf-8').strip()
+                elif filename.endswith(".pl"):
+                    # Load the Perl plugin using subprocess
+                    try:
+                        plugin_path = os.path.join(dirpath, filename)
+                        result = subprocess.check_output(['perl', plugin_path])
+                        plugin = result.decode('utf-8').strip()
 
-                # Add the plugin to the list
-                self.plugins.append(plugin)
+                        # Add the plugin to the list
+                        self.plugins.append(plugin)
+                    except subprocess.CalledProcessError:
+                        print(f"Error loading {os.path.join(dirpath,filename)}")
 
-            elif filename.endswith(".js"):
-                # Load the JavaScript plugin using subprocess
-                plugin_path = os.path.join(dirpath, filename)
-                import subprocess
-                result = subprocess.check_output(['node', plugin_path])
-                plugin = result.decode('utf-8').strip()
+                elif filename.endswith(".js"):
+                    # Load the JavaScript plugin using subprocess
+                    plugin_path = os.path.join(dirpath, filename)
+                    result = subprocess.check_output(['node', plugin_path])
+                    plugin = result.decode('utf-8').strip()
 
-                # Add the plugin to the list
-                self.plugins.append(plugin)
+                    # Add the plugin to the list
+                    self.plugins.append(plugin)
 
-            else:
-                # Unsupported file extension
-                continue
+                else:
+                    # Unsupported file extension
+                    continue
 
     # Listen for audio input through mic with pyaudio and vosk
     def listen(self):
@@ -80,12 +85,12 @@ class AkulAI:
                         self.speak("Okay, exiting")
                         self.stop()
                     else:
-                        self.process_command(result['text'])
+                        self.execute_command(result['text'])
 
     def execute_command(self, command):
         for plugin in self.plugins:
             try:
-                response = plugin.execute(command)
+                response = plugin.handle(command)
 
                 if response:
                     self.speak(response)
@@ -98,7 +103,20 @@ class AkulAI:
 
     def start(self):
         self.speak("Hello, I am AkulAI. How can I help you today?")
+        # Create the listening thread
+        self.stop_listening = threading.Event()
+        self.listening_thread = threading.Thread(target=self.listen)
+        self.listening_thread.start()
 
-        while True:
-            command = self.get_command()
-            self.execute_command(command)
+    # shut down the program and all threads
+    def stop(self):
+        self.stop_listening.set()
+        self.stream.stop_stream()
+        self.stream.close()
+        self.p.terminate()
+        exit()
+
+
+if __name__ == '__main__':
+    akulai = AkulAI()
+    akulai.start()
