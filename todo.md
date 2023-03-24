@@ -5,7 +5,8 @@
  - [ ] Split code into smaller files for easier maintenance
 
 # Later
- - [ ] Add support for more languages (Ruby, Go, and Java - eventually)
+ - [ ] Add plugin support for more languages (Ruby, Go, and Java - eventually)
+ - [ ] Have a mobile app for AkulAI (probably in React or Flutter so we can use same codebase for multiple platforms)
  
 # Done
 None yet (sadly).
