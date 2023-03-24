@@ -3,7 +3,7 @@
 akulai/akulai-plugins
 
 # Ignore the VOSK model folder
-akulai/model
+akulai/model/vosk-model
 
 # Ignore the plugins directory
 akulai/plugins
