@@ -69,7 +69,7 @@ class AkulAI:
 
                 else:
                     # Unsupported file extension error
-                    print("THe plugin file type provided is not supported by AkulAI. PLease use a different plugin.")
+                    print("The plugin file type provided is not supported by AkulAI. Please use a different plugin.")
                     continue
 
     # Listen for audio input through mic with pyaudio and vosk
