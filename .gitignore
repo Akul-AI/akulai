@@ -3,7 +3,7 @@
 akulai/akulai-plugins
 
 # Ignore the VOSK model folder
-akulai/model/vosk-model
+akulai/model
 
 # Ignore the plugins directory
 akulai/plugins
@@ -28,6 +28,7 @@ dist/
 downloads/
 eggs/
 .eggs/
+bin/
 lib/
 lib64/
 parts/
@@ -141,6 +142,10 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+# Ignore venv files
+/bin
+/lib64
+/pyvenv.cfg
 
 # Spyder project settings
 .spyderproject
