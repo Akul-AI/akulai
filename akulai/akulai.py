@@ -8,7 +8,22 @@ import pyaudio
 import subprocess
 import threading
 import vosk
-import pdb
+
+
+class JSPlugin:
+    def __init__(self, plugin_path):
+        self.plugin_path = plugin_path
+        
+    def handle(self, command):
+        return subprocess.check_output(['node', self.plugin_path, json.dumps(command)]).decode('utf-8').strip()
+
+class PerlPlugin:
+    def __init__(self, plugin_path):
+        self.plugin_path = plugin_path
+        
+    def handle(self, command):
+        return subprocess.check_output(['perl', self.plugin_path, json.dumps(command)]).decode('utf-8').strip()
+
 
 class AkulAI:
     def __init__(self):
@@ -35,42 +50,39 @@ class AkulAI:
         self.plugins = []
         for dirpath, dirnames, filenames in os.walk("plugins"):
             for filename in filenames:
-                if filename.endswith(".py"):
-                    # Load the Python plugin using importlib
-                    plugin_path = os.path.join(dirpath, filename)
-                    spec = importlib.util.spec_from_file_location("plugin", plugin_path)
-                    plugin = importlib.util.module_from_spec(spec)
-                    spec.loader.exec_module(plugin)
-
-                    # Add the plugin to the list
-                    self.plugins.append(plugin)
-                    print(f"Loaded plugin from {plugin_path}")
-
-                elif filename.endswith(".pl"):
-                    # Load the Perl plugin using subprocess
-                    try:
+                if filename in ("main.py", "main.js", "main.pl"):
+                    if filename.endswith(".py"):
+                        # Load the Python plugin using importlib
                         plugin_path = os.path.join(dirpath, filename)
-                        result = subprocess.check_output(['perl', plugin_path])
-                        plugin = result.decode('utf-8').strip()
+                        spec = importlib.util.spec_from_file_location("plugin", plugin_path)
+                        plugin = importlib.util.module_from_spec(spec)
+                        spec.loader.exec_module(plugin)
 
                         # Add the plugin to the list
                         self.plugins.append(plugin)
-                    except subprocess.CalledProcessError:
-                        print(f"Error loading {os.path.join(dirpath,filename)}")
+                        print(f"Loaded plugin from {plugin_path}")
 
-                elif filename.endswith(".js"):
-                    # Load the JavaScript plugin using subprocess
-                    plugin_path = os.path.join(dirpath, filename)
-                    result = subprocess.check_output(['node', plugin_path])
-                    plugin = result.decode('utf-8').strip()
+                    elif filename.endswith(".pl"):
+                        # Load the Perl plugin using subprocess
+                        try:
+                            plugin_path = os.path.join(dirpath, filename)
+                            self.plugins.append(PerlPlugin(plugin_path))
 
-                    # Add the plugin to the list
-                    self.plugins.append(plugin)
+                            # Add the plugin to the list
+                            print(f"Loaded perl plugin: {plugin_path}")
+                        except subprocess.CalledProcessError:
+                            print(f"Error loading perl plugin: {plugin_path}")
 
-                else:
-                    # Unsupported file extension error
-                    print("The plugin file type provided is not supported by AkulAI. Please use a different plugin.")
-                    continue
+                    elif filename.endswith(".js"):
+                        # Load the JavaScript plugin using subprocess
+                        try:
+                            plugin_path = os.path.join(dirpath, filename)
+                            self.plugins.append(JSPlugin(plugin_path))
+
+                            # Add the plugin to the list
+                            print(f"Loaded node plugin: {plugin_path}")
+                        except subprocess.CalledProcessError:
+                            print(f"Error loading node plugin: {plugin_path}")
 
     # Listen for audio input through mic with pyaudio and vosk
     def listen(self):
@@ -89,18 +101,21 @@ class AkulAI:
                         self.execute_command(result['text'])
 
     def execute_command(self, command):
+        response = None
         for plugin in self.plugins:
+            print(plugin)
             try:
                 response = plugin.handle(command)
-
+                
                 if response:
                     self.speak(response)
-                    return
+                    handled = True
 
             except Exception as e:
                 print(f"Plugin execution failed: {e}")
 
-        self.speak("Sorry, I didn't understand that.")
+        if(not response):
+            self.speak("Sorry, I didn't understand that.")
 
     def start(self):
         self.speak("Hello, I am AkulAI. How can I help you today?")

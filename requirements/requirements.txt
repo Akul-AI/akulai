@@ -3,4 +3,4 @@ pyttsx3
 vosk
 pyaudio
 js2py
-json
+pypi-json
