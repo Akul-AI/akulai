@@ -1,21 +1,23 @@
 # AkulAI
 
-Note: First off, don't forget to download the ASR model from [here](https://alphacephei.com/vosk/models), unzip it, rename it to `vosk_model` and place it in the `akulai` directory. It won't work without that. Also make sure you have Node.js installed. And finally, for the perl plugins, install any kind of Perl installation, although I recommend Strawbery Perl. Also make sure that you have cpamn installed and have perl in your PATH for Windows.
+Version 2 is OUT! We plan to release a stable version sometime near the end of April (I know it said February before, but we're behind schedule and there is a lot to fix), so stay tuned! I will update from time to time, but as a solo developer (during the time of writing), please don't expect a lot.
 
-### Installation
-Again, you may either follow the steps above, or you may use the provided python script. We have also provided a Batch (CMD) and Bash script. If you face any errors, however, please use the python script before reporting it.
+## Installation
+
+### Manual installation
+
+First of all, download the ASR model from [here](https://alphacephei.com/vosk/models), unzip it, rename it to `vosk_model` and place it inside `models` folder, which is located in the `akulai` directory. Make sure that you have Node.js and any installation of Perl installed, and make sure cpamn (Perl's package manager) is in the system PATH for Windows.
+
+### Automatic installation (with script)
+
+Again, you may either follow the steps above, or you may use the provided python script. We have also provided a Batch (Windows CMD) and Bash (Shell) script. If you face any errors, however, please use the python script before reporting it.
 
 Keep in mind that:
  - All the scripts assume you have a working installation of Python installed.
 
-<hr>
-Version 2 is OUT! We plan to release a stable version sometime near the end of April (I know it said February before, but we're behind schedule and there is a lot to fix), so stay tuned! I will update from time to time, but as a solo developer (during the time of writing), please don't expect a lot.
-
-Please share this and contribute to it, I would love to get some help. If you don't know what to do to help, take a look at todo.md. Or the issues. Your choice.
-
 ## How do I create a skill...??
 
-Check the `create_plugins.md` file, located in the `docs` folder. We now support JS and Perl plugins too! (To share your plugins, see the [akulai plugins](https://github.com/Akul-AI/akulai-plugins) repository.
+Check the `create_plugins.md` file, located in the `docs` folder. We now support JS and Perl plugins too! (To share your plugins, see the [akulai plugins](https://github.com/Akul-AI/akulai-plugins) repository.)
 
 ## What happened to the other version?
 
@@ -23,7 +25,7 @@ Go to the [master-v1 branch](https://github.com/Akul-AI/akulai/tree/master-v1) f
 
 ## Contribution
 
-A follow-up to what I mentioned earlier, you can also check the CONTRIBUTING.md guide. Thanks to all the current contributors!
+You can look at the `todo.md` file (not always updated) or you can look at the issues. Make sure to check the CONTRIBUTING.md guide before making a new feature/fix, though. Thanks to all the contributors!
 
 <a href="https://github.com/Akul-AI/akulai/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Akul-AI/akulai" />

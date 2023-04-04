@@ -1,12 +1,28 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-   
+import importlib.util
+import json
 import os
+import pyttsx3
+import pyaudio
+import subprocess
 import threading
 import vosk
-import pyaudio
-import js2py
-import json
-import pyttsx3
+
+
+class JSPlugin:
+    def __init__(self, plugin_path):
+        self.plugin_path = plugin_path
+        
+    def handle(self, command):
+        return subprocess.check_output(['node', self.plugin_path, json.dumps(command)]).decode('utf-8').strip()
+
+class PerlPlugin:
+    def __init__(self, plugin_path):
+        self.plugin_path = plugin_path
+        
+    def handle(self, command):
+        return subprocess.check_output(['perl', self.plugin_path, json.dumps(command)]).decode('utf-8').strip()
 
 
 class AkulAI:
@@ -17,78 +33,56 @@ class AkulAI:
         # Initialize the pyaudio device
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
-        # Create the listening thread
-        self.stop_listening = threading.Event()
-        self.listening_thread = threading.Thread(target=self.listen)
-        self.listening_thread.start()
         # Initialize the pyttsx3 speech engine
         self.engine = pyttsx3.init()
         self.voices = self.engine.getProperty('voices')
         self.engine.setProperty('voice', self.voices[0].id)
-        # Create plugins dictionary
-        self.plugins = {}
+        # load the plugins
         self.discover_plugins()
+        
+    def speak(self, text):
+        print(f"AkulAI said: {text}")
+        self.engine.say(text)
+        self.engine.runAndWait()
 
-    # Looks for subdirectories in the plugin directory, and scans them for the file types py, js, and pl
+    # Discover and load all plugins
     def discover_plugins(self):
-        for root, dirs, files in os.walk("plugins"):
-            for file in files:
-                if file == "main.py":
-                    plugin_name = os.path.splitext(file)[0]
-                    extension = os.path.splitext(file)[1]
-                    self.check_info(root, plugin_name, extension)
-                    self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)),
-                                                 "extension": ".py"}
-                elif file == "main.js":
-                    plugin_name = os.path.splitext(file)[0]
-                    self.check_info(root, plugin_name, extension)
-                    self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)),
-                                                 "extension": ".js"}
-                elif file == "main.pl":
-                    plugin_name = os.path.splitext(file)[0]
-                    self.check_info(root, plugin_name, extension)
-                    self.plugins[plugin_name] = {"handle": self.load_plugin(os.path.join(root, file)),
-                                                 "extension": ".pl"}
+        self.plugins = []
+        for dirpath, dirnames, filenames in os.walk("plugins"):
+            for filename in filenames:
+                if filename in ("main.py", "main.js", "main.pl"):
+                    if filename.endswith(".py"):
+                        # Load the Python plugin using importlib
+                        plugin_path = os.path.join(dirpath, filename)
+                        spec = importlib.util.spec_from_file_location("plugin", plugin_path)
+                        plugin = importlib.util.module_from_spec(spec)
+                        spec.loader.exec_module(plugin)
 
-    # Checks for the plugin.info file and installs any required dependencies.
-    def check_info(self, root, plugin_name, extension):
-        info_file = os.path.join(root, plugin_name, 'plugin.info')
-        if os.path.isfile(info_file):
-            with open(info_file) as f:
-                lines = f.readlines()
-                for line in lines:
-                    if 'dependencies' in line:
-                        dependencies = line.split(':')[1].strip()
-                        if dependencies:
-                            if extension == ".py":
-                                try:
-                                    os.system(f"pip install {dependencies}")
-                                except Exception as e:
-                                    print(f"Error log:{e}")
-                            elif extension == ".js":
-                                try:
-                                    os.system(f"npm install {dependencies}")
-                                except Exception as e:
-                                    print(f"Error log:{e}")
-                            elif extension == ".pl":
-                                try:
-                                    os.system(f"cpanm {dependencies}")
-                                except Exception as e:
-                                    print(f"Error log:{e}")
-                            print(f"{plugin_name} has the following dependencies: {dependencies}")
-                        else:
-                            print(f"{plugin_name} has no dependencies.")
-                    elif 'author' in line:
-                        author = line.split(':')[1].strip()
-                        print(f"{plugin_name} was written by: {author}")
-                    elif 'description' in line:
-                        description = line.split(':')[1].strip()
-                        print(f"Plugin Description: {description}")
+                        # Add the plugin to the list
+                        self.plugins.append(plugin)
+                        print(f"Loaded plugin from {plugin_path}")
 
-    # Loads the plugins
-    def load_plugin(self, file):
-        with open(file, "r") as f:
-            return f.read()
+                    elif filename.endswith(".pl"):
+                        # Load the Perl plugin using subprocess
+                        try:
+                            plugin_path = os.path.join(dirpath, filename)
+                            self.plugins.append(PerlPlugin(plugin_path))
+
+                            # Add the plugin to the list
+                            print(f"Loaded perl plugin: {plugin_path}")
+                        except subprocess.CalledProcessError:
+                            print(f"Error loading perl plugin: {plugin_path}")
+
+                    elif filename.endswith(".js"):
+                        # Load the JavaScript plugin using subprocess
+                        try:
+                            plugin_path = os.path.join(dirpath, filename)
+                            self.plugins.append(JSPlugin(plugin_path))
+
+                            # Add the plugin to the list
+                            print(f"Loaded node plugin: {plugin_path}")
+                        except subprocess.CalledProcessError:
+                            print(f"Error loading node plugin: {plugin_path}")
 
     # Listen for audio input through mic with pyaudio and vosk
     def listen(self):
@@ -104,45 +98,41 @@ class AkulAI:
                         self.speak("Okay, exiting")
                         self.stop()
                     else:
-                        self.process_command(result['text'])
+                        self.execute_command(result['text'])
 
-    # Processes given command and scans the plugins for one that can complete the command.
-    # If none are found, give error and listen for next command.
-    def process_command(self, command):
-        for plugin_name in self.plugins:
-            if plugin_name in command:
-                try:
-                    plugin_module = self.plugins[plugin_name]
-                    if plugin_module["extension"] == '.py':
-                        plugin_module["handle"](self, command)
-                    elif plugin_module["extension"] == '.js':
-                        js2py.eval_js(f'''
-                            const akulAI = {self};
-                            {plugin_module["handle"]}
-                        ''')
-                    elif plugin_module["extension"] == '.pl':
-                        os.system(f"perl plugins/{plugin_name}.pl", self, command)
-                except Exception as e:
-                    self.speak(f"An error occurred while running the command you asked for. Here is the full exception: {e}")
-                    raise
-                return
-        self.speak("I'm sorry, I didn't understand that command.")
+    def execute_command(self, command):
+        response = None
+        for plugin in self.plugins:
+            print(plugin)
+            try:
+                response = plugin.handle(command)
+                
+                if response:
+                    self.speak(response)
+                    handled = True
 
-    def speak(self, text):
-        print(f"AkulAI said: {text}")
-        self.engine.say(text)
-        self.engine.runAndWait()
+            except Exception as e:
+                print(f"Plugin execution failed: {e}")
 
-    # Shuts down the program and all threads + other operations it is running
+        if(not response):
+            self.speak("Sorry, I didn't understand that.")
+
+    def start(self):
+        self.speak("Hello, I am AkulAI. How can I help you today?")
+        # Create the listening thread
+        self.stop_listening = threading.Event()
+        self.listening_thread = threading.Thread(target=self.listen)
+        self.listening_thread.start()
+
+    # shut down the program and all threads
     def stop(self):
         self.stop_listening.set()
-        self.listening_thread.join()
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
         exit()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     akulai = AkulAI()
-    print("say something")
+    akulai.start()

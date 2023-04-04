@@ -3,5 +3,6 @@ pyttsx3
 vosk
 pyaudio
 js2py
+json
 # Must use Python 3.10 or above
 refurb
