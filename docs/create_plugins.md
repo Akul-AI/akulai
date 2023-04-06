@@ -83,4 +83,4 @@ Once a plugin has been created, it will automatically be loaded and available fo
 
 Plugins are all currently executed every time an utterance is detected.
 
-For example, if you have a plugin that says "Hello, World!" when the user says "hello", you can test it by saying "hello" and the response should be "Hello there!"
+For example, if you have a plugin that says "Hello there!" when the user says "hello", you can test it by saying "hello" and the response should be "Hello there!"
