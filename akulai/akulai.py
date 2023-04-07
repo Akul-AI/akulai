@@ -101,9 +101,8 @@ class AkulAI:
                         self.execute_command(result['text'])
 
     def execute_command(self, command):
-        response = None
+        handled = False
         for plugin in self.plugins:
-            print(plugin)
             try:
                 response = plugin.handle(command)
                 
@@ -114,7 +113,7 @@ class AkulAI:
             except Exception as e:
                 print(f"Plugin execution failed: {e}")
 
-        if(not response):
+        if(not handled):
             self.speak("Sorry, I didn't understand that.")
 
     def start(self):
