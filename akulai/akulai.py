@@ -8,6 +8,20 @@ import pyaudio
 import subprocess
 import threading
 import vosk
+from fastapi import FastAPI
+
+app = FastAPI()
+akulai = AkulAI()
+
+@app.get("/speak/")
+def speak(text: str):
+    akulai.speak(text)
+    return {"message": "Text synthesized"}
+
+@app.post("/listen/")
+def listen():
+    akulai.listen()
+    return {"message": "Listening..."}
 
 
 class JSPlugin:
