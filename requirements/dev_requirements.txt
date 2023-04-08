@@ -4,5 +4,5 @@ vosk
 pyaudio
 js2py
 json
-# Must use Python 3.10 or above
-refurb
+refurb # Must use Python 3.10 or above
+fastapi[api]

@@ -4,3 +4,4 @@ vosk
 pyaudio
 js2py
 pypi-json
+fastapi[all]
