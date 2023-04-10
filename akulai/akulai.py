@@ -10,19 +10,6 @@ import threading
 import vosk
 from fastapi import FastAPI
 
-app = FastAPI()
-akulai = AkulAI()
-
-@app.get("/")
-async def speak(text: str):
-    akulai.speak(text)
-    return {"message": "Text synthesized"}
-
-@app.post("/")
-async def listen():
-    akulai.listen()
-    return {"message": "Listening..."}
-
 
 class JSPlugin:
     def __init__(self, plugin_path):
@@ -132,10 +119,24 @@ class AkulAI:
 
     def start(self):
         self.speak("Hello, I am AkulAI. How can I help you today?")
+
         # Create the listening thread
         self.stop_listening = threading.Event()
         self.listening_thread = threading.Thread(target=self.listen)
         self.listening_thread.start()
+
+        # Start the API process
+        app = FastAPI()
+
+        @app.get("/")
+        async def speak(text: str):
+            self.speak(text)
+            return {"message": "Text synthesized"}
+
+        @app.post("/")
+        async def listen():
+            self.listen()
+            return {"message": "Listening..."}
 
     # shut down the program and all threads
     def stop(self):
