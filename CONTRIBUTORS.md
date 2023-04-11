@@ -1,3 +1,3 @@
-Akul Goel - Akul2010 - akulgoel2010@gmail.com
+Akul Goel - Akul2010
 
-Aaron Chantrill - AaronC
+Aaron Chantrill - aaronchntrill
