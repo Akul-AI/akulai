@@ -2,10 +2,8 @@
 .gitmodules
 akulai/akulai-plugins
 
-# Ignore the VOSK model folder
+# Ignore all files that are only used for testing
 akulai/model
-
-# Ignore the plugins directory
 akulai/plugins
 
 # IDE files and folders
