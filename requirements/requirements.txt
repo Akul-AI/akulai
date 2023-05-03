@@ -1,6 +1,8 @@
-# Use only if you are going to use the program, not edit it
+pypi-json
 pyttsx3
 vosk
 pyaudio
 js2py
-pypi-json
+json
+# Must use Python 3.10 or above, optional, only for refining code
+refurb
