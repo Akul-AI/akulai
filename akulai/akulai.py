@@ -8,6 +8,7 @@ import pyaudio
 import subprocess
 import threading
 import vosk
+from fastapi import FastAPI
 
 
 class JSPlugin:
@@ -116,13 +117,6 @@ class AkulAI:
         if(not handled):
             self.speak("Sorry, I didn't understand that.")
 
-    def start(self):
-        self.speak("Hello, I am AkulAI. How can I help you today?")
-        # Create the listening thread
-        self.stop_listening = threading.Event()
-        self.listening_thread = threading.Thread(target=self.listen)
-        self.listening_thread.start()
-
     # shut down the program and all threads
     def stop(self):
         self.stop_listening.set()
@@ -133,5 +127,26 @@ class AkulAI:
 
 
 if __name__ == '__main__':
+    # Create the listening thread
+    self.stop_listening = threading.Event()
+    self.listening_thread = threading.Thread(target=self.listen)
+    self.listening_thread.start()
+
+    # Set up API
+    app = FastAPI()
     akulai = AkulAI()
-    akulai.start()
+
+    @app.get("/speak/")
+    def speak(text: str):
+        akulai.speak(text)
+        return {"message": "Text synthesized"}
+
+    @app.post("/listen/")
+    def listen():
+        akulai.listen()
+        return {"message": "Listening..."}
+
+    # Run the server for the API
+    os.system("uvicorn akulai:app --reload")
+
+    akulai.speak("Hello, I am AkulAI. How can I help you today?")
