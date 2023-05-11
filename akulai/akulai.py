@@ -8,6 +8,7 @@ import pyaudio
 import subprocess
 import threading
 import vosk
+import sys
 from fastapi import FastAPI
 
 
@@ -123,7 +124,7 @@ class AkulAI:
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
-        exit()
+        sys.exit()
 
 
 if __name__ == '__main__':
