@@ -126,6 +126,9 @@ class AkulAI:
         self.p.terminate()
         sys.exit()
 
+# Set up API
+app = FastAPI()
+akulai = AkulAI()
 
 if __name__ == '__main__':
     # Create the listening thread
@@ -133,20 +136,16 @@ if __name__ == '__main__':
     self.listening_thread = threading.Thread(target=self.listen)
     self.listening_thread.start()
 
-    # Set up API
-    app = FastAPI()
-    akulai = AkulAI()
-
-    @app.get("/")
+   @app.get("/speak/{text}")
     async def speak(text: str):
         akulai.speak(text)
         return {"message": "Text synthesized"}
 
-    @app.post("/")
+    @app.post("/listen")
     async def listen():
         akulai.listen()
         return {"message": "Listening..."}
-
+    
     # Run the server for the API
     os.system("uvicorn akulai:app --reload")
 
