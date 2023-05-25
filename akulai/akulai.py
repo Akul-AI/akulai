@@ -10,6 +10,7 @@ import threading
 import vosk
 import sys
 from fastapi import FastAPI
+import webbrowser
 
 
 class JSPlugin:
@@ -148,5 +149,5 @@ if __name__ == '__main__':
     
     # Run the server for the API
     os.system("uvicorn akulai:app --reload")
-
+    webbrowser.open("http://127.0.0.1:8000")
     akulai.speak("Hello, I am AkulAI. How can I help you today?")
