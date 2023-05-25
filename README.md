@@ -1,7 +1,5 @@
 # AkulAI
 
-Version 2 is OUT! We plan to release a stable version sometime near the end of April (I know it said February before, but we're behind schedule and there is a lot to fix), so stay tuned! I will update from time to time, but as a solo developer (during the time of writing), please don't expect a lot.
-
 ## Installation
 
 ### Manual installation
