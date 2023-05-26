@@ -1,5 +1,7 @@
 # AkulAI
 
+If you want a more stable version (this is not done yet and may not work) head [here](https://github.com/Akul-AI/akulai/tree/master-v1)
+
 ## Installation
 
 ### Manual installation
