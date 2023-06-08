@@ -32,6 +32,6 @@ You can look at the `todo.md` file (not always updated) or you can look at the i
 </a>
 
 
-## Pointless Information (Kinda)
-
-We use semantic versioning. That's it so far.
+## Other Information
+Version system - semantic versioning
+Compatible with - Windows, Linux, Raspberry Pi
