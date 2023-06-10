@@ -133,11 +133,11 @@ akulai = AkulAI()
 
 if __name__ == '__main__':
     # Create the listening thread
-    self.stop_listening = threading.Event()
-    self.listening_thread = threading.Thread(target=self.listen)
-    self.listening_thread.start()
+    akulai.stop_listening = threading.Event()
+    akulai.listening_thread = threading.Thread(target=akulai.listen)
+    akulai.listening_thread.start()
 
-   @app.get("/speak/{text}")
+    @app.get("/speak/{text}")
     async def speak(text: str):
         akulai.speak(text)
         return {"message": "Text synthesized"}
