@@ -13,7 +13,7 @@ repo_url = "https://github.com/Akul-AI/akulai-plugins"
 subdir = "plugins"
 
 # Use git submodules to fetch the plugins subdir in the akulai plugins repo
-os.system("git submodule add {}".format(repo_url))
+os.system("git submodule add {} --name akulai-plugins".format(repo_url))
 os.system("git submodule update --init --recursive")
 
 # Move the files from the subdirectory to the local "akulai/plugins" folder
