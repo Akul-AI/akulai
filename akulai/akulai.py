@@ -10,7 +10,7 @@ import threading
 import vosk
 import sys
 from fastapi import FastAPI
-import webbrowser
+import time
 
 
 class JSPlugin:
@@ -132,12 +132,17 @@ app = FastAPI()
 akulai = AkulAI()
 
 if __name__ == '__main__':
+
+    # Run API server
+    os.system("uvicorn akulai:app --reload")
+    time.sleep(5)
+
     # Create the listening thread
     akulai.stop_listening = threading.Event()
     akulai.listening_thread = threading.Thread(target=akulai.listen)
     akulai.listening_thread.start()
 
-    @app.get("/speak/{text}")
+    @app.post("/speak/{text}")
     async def speak(text: str):
         akulai.speak(text)
         return {"message": "Text synthesized"}
@@ -146,8 +151,5 @@ if __name__ == '__main__':
     async def listen():
         akulai.listen()
         return {"message": "Listening..."}
-    
-    # Run the server for the API
-    os.system("uvicorn akulai:app --reload")
-    webbrowser.open("http://127.0.0.1:8000")
+
     akulai.speak("Hello, I am AkulAI. How can I help you today?")
