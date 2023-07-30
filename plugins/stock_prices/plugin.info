@@ -1,0 +1,3 @@
+author: Akul Goel
+dependencies: LWP::UserAgent
+description: This plugin tells you the stock prices when you ask it to.
