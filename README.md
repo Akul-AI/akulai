@@ -35,4 +35,5 @@ You can look at the `todo.md` file (not always updated) or you can look at the i
 
 ## Other Information
 Version system - semantic versioning
+
 Compatible with - Windows, Linux, Raspberry Pi
