@@ -1,3 +1,0 @@
-author: Akul Goel
-dependencies: Weather::Google
-description: This plugin checks Google for the weather around you.

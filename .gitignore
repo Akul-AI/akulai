@@ -1,6 +1,5 @@
 # Files from setup
 .gitmodules
-akulai/akulai-plugins
 
 # Ignore the VOSK model folder and everything in it
 akulai/model
@@ -18,9 +17,6 @@ model/vosk_model/ivector/global_cmvn.stats
 model/vosk_model/ivector/online_cmvn.conf
 model/vosk_model/ivector/splice.conf
 model/vosk_model/README
-
-# Ignore the plugins directory
-akulai/plugins
 
 # IDE files and folders
 ./idea

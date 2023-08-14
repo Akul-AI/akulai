@@ -1,3 +1,0 @@
-author: Akul Goel
-dependencies: fs
-description: This plugin asks for events and stores them in a JSON database. When the time comes, it will remind you to do your saved event.

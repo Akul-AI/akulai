@@ -3,7 +3,7 @@
 import importlib.util
 import json
 import os
-import pyttsx3
+import rlvoice
 import pyaudio
 import subprocess
 import threading
@@ -36,8 +36,8 @@ class AkulAI:
         # Initialize the pyaudio device
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
-        # Initialize the pyttsx3 speech engine
-        self.engine = pyttsx3.init()
+        # Initialize the rlvoice speech engine
+        self.engine = rlvoice.init()
         self.voices = self.engine.getProperty('voices')
         self.engine.setProperty('voice', self.voices[0].id)
         # load the plugins
@@ -127,11 +127,11 @@ class AkulAI:
         self.p.terminate()
         sys.exit()
 
-# Set up API
-app = FastAPI()
-akulai = AkulAI()
-
 if __name__ == '__main__':
+
+    # Set up API
+    app = FastAPI()
+    akulai = AkulAI()
 
     # Run API server
     os.system("uvicorn akulai:app --reload")
