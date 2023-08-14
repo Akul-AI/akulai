@@ -4,8 +4,9 @@ import zipfile
 import requests
 import platform
 
-# Change directory to the parent directory of the script
+# Change directory to the akulai directory
 os.chdir("..")
+os.chdir("akulai")
 
 # Use requests library to download vosk
 vosk_url = "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
@@ -22,6 +23,9 @@ os.rename("akulai/model/vosk-model-small-en-us-0.15", "akulai/model/vosk_model")
 
 # Clean up the downloaded archive
 os.remove("vosk-model-small-en-us-0.15.zip")
+
+# Change directory to the base directory
+os.chdir("..")
 
 # Check the current operating system
 current_os = platform.system()

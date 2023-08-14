@@ -2,21 +2,7 @@
 .gitmodules
 
 # Ignore the VOSK model folder and everything in it
-akulai/model
-model/vosk_model/am/final.mdl
-model/vosk_model/conf/mfcc.conf
-model/vosk_model/conf/model.conf
-model/vosk_model/graph/disambig_tid.int
-model/vosk_model/graph/Gr.fst
-model/vosk_model/graph/HCLr.fst
-model/vosk_model/graph/phones/word_boundary.int
-model/vosk_model/ivector/final.dubm
-model/vosk_model/ivector/final.ie
-model/vosk_model/ivector/final.mat
-model/vosk_model/ivector/global_cmvn.stats
-model/vosk_model/ivector/online_cmvn.conf
-model/vosk_model/ivector/splice.conf
-model/vosk_model/README
+akulai/model/vosk_model
 
 # IDE files and folders
 ./idea
