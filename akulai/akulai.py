@@ -127,29 +127,27 @@ class AkulAI:
         self.p.terminate()
         sys.exit()
 
-if __name__ == '__main__':
+# Set up API
+app = FastAPI()
+akulAI = AkulAI()
 
-    # Set up API
-    app = FastAPI()
-    akulai = AkulAI()
+# Run API server
+os.system("uvicorn akulai:app --reload")
+time.sleep(5)
 
-    # Run API server
-    os.system("uvicorn akulai:app --reload")
-    time.sleep(5)
+# Create the listening thread
+akulAI.stop_listening = threading.Event()
+akulAI.listening_thread = threading.Thread(target=akulAI.listen)
+akulAI.listening_thread.start()
 
-    # Create the listening thread
-    akulai.stop_listening = threading.Event()
-    akulai.listening_thread = threading.Thread(target=akulai.listen)
-    akulai.listening_thread.start()
+@app.post("/speak/{text}")
+async def speak(text: str):
+    akulAI.speak(text)
+    return {"message": "Text synthesized"}
 
-    @app.post("/speak/{text}")
-    async def speak(text: str):
-        akulai.speak(text)
-        return {"message": "Text synthesized"}
+@app.post("/listen")
+async def listen():
+    akulAI.listen()
+    return {"message": "Listening..."}
 
-    @app.post("/listen")
-    async def listen():
-        akulai.listen()
-        return {"message": "Listening..."}
-
-    akulai.speak("Hello, I am AkulAI. How can I help you today?")
+akulAI.speak("Hello, I am AkulAI. How can I help you today?")
