@@ -2,7 +2,6 @@ pypi-json
 rlvoice-1
 vosk
 pyaudio
-js2py
 fastapi[all]
 requests
 # Must use Python 3.10 or above, optional, only for refining code
