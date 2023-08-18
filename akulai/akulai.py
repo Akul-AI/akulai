@@ -39,6 +39,7 @@ class AkulAI:
         # Initialize the rlvoice speech engine
         self.engine = rlvoice.init()
         self.voices = self.engine.getProperty('voices')
+        self.engine.setProperty('rate', 100)
         self.engine.setProperty('voice', self.voices[0].id)
         # load the plugins
         self.discover_plugins()
