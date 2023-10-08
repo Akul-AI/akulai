@@ -64,7 +64,7 @@ class AkulAI:
 
                         # Add the plugin to the list
                         self.plugins.append(plugin)
-                        print(f"Loaded plugin from {plugin_path}")
+                        print(f"Loaded python plugin: {plugin_path}")
 
                     elif filename.endswith(".pl"):
                         # Load the Perl plugin using subprocess
