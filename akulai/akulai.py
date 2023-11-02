@@ -41,6 +41,10 @@ class AkulAI:
         self.voices = self.engine.getProperty('voices')
         self.engine.setProperty('rate', 100)
         self.engine.setProperty('voice', self.voices[0].id)
+        # Create the listening thread
+        self.stop_listening = threading.Event()
+        self.listening_thread = threading.Thread(target=akulAI.listen)
+        self.listening_thread.start()
         # load the plugins
         self.discover_plugins()
         
@@ -59,7 +63,7 @@ class AkulAI:
                         # Load the Python plugin using importlib
                         plugin_path = os.path.join(dirpath, filename)
                         spec = importlib.util.spec_from_file_location("plugin", plugin_path)
-                        plugin = importlib.util.module_from_spec(spec)
+                        plugin = importlib.util.module_from_spec(spec) # type: ignore
                         spec.loader.exec_module(plugin)
 
                         # Add the plugin to the list
@@ -90,7 +94,7 @@ class AkulAI:
 
     # Listen for audio input through mic with pyaudio and vosk
     def listen(self):
-        while not self.stop_listening.is_set():
+        while not self.stop_listening.is_set(): # type: ignore
             data = self.stream.read(16000, exception_on_overflow=False)
             if len(data) == 0:
                 break
@@ -122,7 +126,7 @@ class AkulAI:
 
     # shut down the program and all threads
     def stop(self):
-        self.stop_listening.set()
+        self.stop_listening.set() # type: ignore
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
@@ -135,11 +139,6 @@ akulAI = AkulAI()
 # Run API server
 os.system("uvicorn akulai:app --reload")
 time.sleep(5)
-
-# Create the listening thread
-akulAI.stop_listening = threading.Event()
-akulAI.listening_thread = threading.Thread(target=akulAI.listen)
-akulAI.listening_thread.start()
 
 @app.post("/speak/{text}")
 async def speak(text: str):
