@@ -1,26 +1,12 @@
 # If using this script on Windows, just keep in mind that this script needs to be run with administrator permissions.
 import os
-import shutil
 import zipfile
 import requests
 import platform
 
-# Change directory to the parent directory of the script
+# Change directory to the akulai directory
 os.chdir("..")
-
-# Define the GitHub repository URL and subdirectory
-repo_url = "https://github.com/Akul-AI/akulai-plugins"
-subdir = "plugins"
-
-# Use git submodules to fetch the plugins subdir in the akulai plugins repo
-os.system("git submodule add {}".format(repo_url))
-os.system("git submodule update --init --recursive")
-
-# Move the files from the subdirectory to the local "akulai/plugins" folder
-shutil.move("{}/".format(f"akulai-plugins/{subdir}"), "akulai/")
-
-# Delete the files after copying them
-shutil.rmtree("akulai-plugins")
+os.chdir("akulai")
 
 # Use requests library to download vosk
 vosk_url = "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
@@ -37,6 +23,9 @@ os.rename("akulai/model/vosk-model-small-en-us-0.15", "akulai/model/vosk_model")
 
 # Clean up the downloaded archive
 os.remove("vosk-model-small-en-us-0.15.zip")
+
+# Change directory to the base directory
+os.chdir("..")
 
 # Check the current operating system
 current_os = platform.system()

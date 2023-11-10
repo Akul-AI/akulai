@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (akulai)" project-jdk-type="Python SDK" />
+  <component name="Black">
+    <option name="enabledOnReformat" value="true" />
+    <option name="enabledOnSave" value="true" />
+    <option name="executionMode" value="BINARY" />
+    <option name="pathToExecutable" value="C:\Users\akulg\anaconda3\Scripts\black.exe" />
+    <option name="sdkUUID" value="aaaac6bc-f58b-4e0e-8deb-1589fc8c9b3f" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="akulai" project-jdk-type="Python SDK" />
 </project>

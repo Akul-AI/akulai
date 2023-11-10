@@ -3,11 +3,14 @@
 import importlib.util
 import json
 import os
-import pyttsx3
+import rlvoice
 import pyaudio
 import subprocess
 import threading
 import vosk
+import sys
+from fastapi import FastAPI
+import time
 
 
 class JSPlugin:
@@ -33,10 +36,15 @@ class AkulAI:
         # Initialize the pyaudio device
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
-        # Initialize the pyttsx3 speech engine
-        self.engine = pyttsx3.init()
+        # Initialize the rlvoice speech engine
+        self.engine = rlvoice.init()
         self.voices = self.engine.getProperty('voices')
+        self.engine.setProperty('rate', 120)
         self.engine.setProperty('voice', self.voices[0].id)
+        # Create the listening thread
+        self.stop_listening = threading.Event()
+        self.listening_thread = threading.Thread(target=self.listen)
+        self.listening_thread.start()
         # load the plugins
         self.discover_plugins()
         
@@ -55,12 +63,12 @@ class AkulAI:
                         # Load the Python plugin using importlib
                         plugin_path = os.path.join(dirpath, filename)
                         spec = importlib.util.spec_from_file_location("plugin", plugin_path)
-                        plugin = importlib.util.module_from_spec(spec)
-                        spec.loader.exec_module(plugin)
+                        plugin = importlib.util.module_from_spec(spec) # type: ignore
+                        spec.loader.exec_module(plugin) # type: ignore
 
                         # Add the plugin to the list
                         self.plugins.append(plugin)
-                        print(f"Loaded plugin from {plugin_path}")
+                        print(f"Loaded python plugin: {plugin_path}")
 
                     elif filename.endswith(".pl"):
                         # Load the Perl plugin using subprocess
@@ -71,7 +79,7 @@ class AkulAI:
                             # Add the plugin to the list
                             print(f"Loaded perl plugin: {plugin_path}")
                         except subprocess.CalledProcessError:
-                            print(f"Error loading perl plugin: {plugin_path}")
+                            print(f"Error loading perl plugin: {plugin_path}") # type: ignore
 
                     elif filename.endswith(".js"):
                         # Load the JavaScript plugin using subprocess
@@ -82,11 +90,11 @@ class AkulAI:
                             # Add the plugin to the list
                             print(f"Loaded node plugin: {plugin_path}")
                         except subprocess.CalledProcessError:
-                            print(f"Error loading node plugin: {plugin_path}")
+                            print(f"Error loading node plugin: {plugin_path}") # type: ignore
 
     # Listen for audio input through mic with pyaudio and vosk
     def listen(self):
-        while not self.stop_listening.is_set():
+        while not self.stop_listening.is_set(): # type: ignore
             data = self.stream.read(16000, exception_on_overflow=False)
             if len(data) == 0:
                 break
@@ -116,22 +124,30 @@ class AkulAI:
         if(not handled):
             self.speak("Sorry, I didn't understand that.")
 
-    def start(self):
-        self.speak("Hello, I am AkulAI. How can I help you today?")
-        # Create the listening thread
-        self.stop_listening = threading.Event()
-        self.listening_thread = threading.Thread(target=self.listen)
-        self.listening_thread.start()
-
     # shut down the program and all threads
     def stop(self):
-        self.stop_listening.set()
+        self.stop_listening.set() # type: ignore
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
-        exit()
+        sys.exit()
 
+# Set up API
+app = FastAPI()
+akulAI = AkulAI()
 
-if __name__ == '__main__':
-    akulai = AkulAI()
-    akulai.start()
+# Run API server
+os.system("uvicorn akulai:app --reload")
+time.sleep(5)
+
+@app.post("/speak/{text}")
+async def speak(text: str):
+    akulAI.speak(text)
+    return {"message": "Text synthesized"}
+
+@app.post("/listen")
+async def listen():
+    akulAI.listen()
+    return {"message": "Listening..."}
+
+akulAI.speak("Hello, I am AkulAI. How can I help you today?")
