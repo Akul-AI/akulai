@@ -39,11 +39,11 @@ class AkulAI:
         # Initialize the rlvoice speech engine
         self.engine = rlvoice.init()
         self.voices = self.engine.getProperty('voices')
-        self.engine.setProperty('rate', 100)
+        self.engine.setProperty('rate', 120)
         self.engine.setProperty('voice', self.voices[0].id)
         # Create the listening thread
         self.stop_listening = threading.Event()
-        self.listening_thread = threading.Thread(target=akulAI.listen)
+        self.listening_thread = threading.Thread(target=self.listen)
         self.listening_thread.start()
         # load the plugins
         self.discover_plugins()
@@ -64,7 +64,7 @@ class AkulAI:
                         plugin_path = os.path.join(dirpath, filename)
                         spec = importlib.util.spec_from_file_location("plugin", plugin_path)
                         plugin = importlib.util.module_from_spec(spec) # type: ignore
-                        spec.loader.exec_module(plugin)
+                        spec.loader.exec_module(plugin) # type: ignore
 
                         # Add the plugin to the list
                         self.plugins.append(plugin)
@@ -79,7 +79,7 @@ class AkulAI:
                             # Add the plugin to the list
                             print(f"Loaded perl plugin: {plugin_path}")
                         except subprocess.CalledProcessError:
-                            print(f"Error loading perl plugin: {plugin_path}")
+                            print(f"Error loading perl plugin: {plugin_path}") # type: ignore
 
                     elif filename.endswith(".js"):
                         # Load the JavaScript plugin using subprocess
@@ -90,7 +90,7 @@ class AkulAI:
                             # Add the plugin to the list
                             print(f"Loaded node plugin: {plugin_path}")
                         except subprocess.CalledProcessError:
-                            print(f"Error loading node plugin: {plugin_path}")
+                            print(f"Error loading node plugin: {plugin_path}") # type: ignore
 
     # Listen for audio input through mic with pyaudio and vosk
     def listen(self):
